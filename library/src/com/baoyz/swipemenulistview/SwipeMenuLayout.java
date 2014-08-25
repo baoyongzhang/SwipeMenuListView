@@ -1,20 +1,19 @@
 package com.baoyz.swipemenulistview;
 
-
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.widget.ScrollerCompat;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
-import android.widget.FrameLayout;
+import android.view.animation.AnticipateOvershootInterpolator;
 import android.widget.RelativeLayout;
-import android.widget.Scroller;
 
 /**
  * 
@@ -37,6 +36,8 @@ public class SwipeMenuLayout extends RelativeLayout {
 	private GestureDetectorCompat mGestureDetector;
 	private OnGestureListener mGestureListener;
 	private boolean isFling;
+	private int MIN_FLING = dp2px(15);
+	private int MAX_VELOCITYX = -dp2px(500);
 	private ScrollerCompat mScroller;
 	private int mBaseX;
 	private int position;
@@ -45,6 +46,7 @@ public class SwipeMenuLayout extends RelativeLayout {
 		super(contentView.getContext());
 		mContentView = contentView;
 		mMenuView = menuView;
+		mMenuView.setLayout(this);
 		init();
 	}
 
@@ -81,13 +83,19 @@ public class SwipeMenuLayout extends RelativeLayout {
 			public boolean onFling(MotionEvent e1, MotionEvent e2,
 					float velocityX, float velocityY) {
 				// TODO
-				// Log.i("byz", "velocityX = " + velocityX);
+				if ((e1.getX() - e2.getX()) > MIN_FLING
+						&& velocityX < MAX_VELOCITYX) {
+					isFling = true;
+				}
+				Log.i("byz", MAX_VELOCITYX + ", velocityX = " + velocityX);
 				return super.onFling(e1, e2, velocityX, velocityY);
 			}
 		};
 		mGestureDetector = new GestureDetectorCompat(getContext(),
 				mGestureListener);
 
+		// mScroller = ScrollerCompat.create(getContext(), new
+		// BounceInterpolator());
 		mScroller = ScrollerCompat.create(getContext());
 
 		LayoutParams contentParams = new LayoutParams(
@@ -133,12 +141,14 @@ public class SwipeMenuLayout extends RelativeLayout {
 	}
 
 	public boolean onSwipe(MotionEvent event) {
+		mGestureDetector.onTouchEvent(event);
 		switch (event.getAction()) {
 		case MotionEvent.ACTION_DOWN:
 			mDownX = (int) event.getX();
+			isFling = false;
 			break;
 		case MotionEvent.ACTION_MOVE:
-			Log.i("byz", "swipe downX = " + mDownX + ", moveX = " + event.getX());
+			// Log.i("byz", "downX = " + mDownX + ", moveX = " + event.getX());
 			int dis = (int) (mDownX - event.getX());
 			if (state == STATE_OPEN) {
 				dis += mMenuView.getWidth();
@@ -146,7 +156,7 @@ public class SwipeMenuLayout extends RelativeLayout {
 			swpie(dis);
 			break;
 		case MotionEvent.ACTION_UP:
-			if ((mDownX - event.getX()) > (mMenuView.getWidth() / 2)) {
+			if (isFling || (mDownX - event.getX()) > (mMenuView.getWidth() / 2)) {
 				// open
 				smoothOpenMenu();
 			} else {
@@ -156,8 +166,11 @@ public class SwipeMenuLayout extends RelativeLayout {
 			}
 			break;
 		}
-		mGestureDetector.onTouchEvent(event);
 		return true;
+	}
+
+	public boolean isOpen() {
+		return state == STATE_OPEN;
 	}
 
 	@Override
@@ -198,14 +211,14 @@ public class SwipeMenuLayout extends RelativeLayout {
 	public void smoothCloseMenu() {
 		state = STATE_CLOSE;
 		mBaseX = -mContentView.getLeft();
-		mScroller.startScroll(0, 0, mBaseX, 0);
+		mScroller.startScroll(0, 0, mBaseX, 0, 350);
 		postInvalidate();
 	}
 
 	public void smoothOpenMenu() {
 		state = STATE_OPEN;
 		mScroller.startScroll(-mContentView.getLeft(), 0, mMenuView.getWidth(),
-				0);
+				0, 350);
 		postInvalidate();
 	}
 
@@ -231,4 +244,8 @@ public class SwipeMenuLayout extends RelativeLayout {
 		return mMenuView;
 	}
 
+	private int dp2px(int dp) {
+		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
+				getContext().getResources().getDisplayMetrics());
+	}
 }

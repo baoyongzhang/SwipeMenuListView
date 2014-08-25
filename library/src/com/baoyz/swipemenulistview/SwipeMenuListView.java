@@ -88,8 +88,9 @@ public class SwipeMenuListView extends ListView {
 			mDownY = ev.getY();
 			mTouchState = TOUCH_STATE_NONE;
 
-			if (mTouchView != null) {
+			if (mTouchView != null && mTouchView.isOpen()) {
 				mTouchView.smoothCloseMenu();
+				return false;
 			}
 			mTouchPosition = pointToPosition((int) ev.getX(), (int) ev.getY());
 			View view = getChildAt(mTouchPosition - getFirstVisiblePosition());
@@ -107,11 +108,11 @@ public class SwipeMenuListView extends ListView {
 				// 滑动
 				if (mTouchView != null) {
 					mTouchView.onSwipe(ev);
-					return true;
 				}
+				return true;
 			} else {
-				Log.i("byz", "state = " + mTouchState + ", dx = " + dx
-						+ ", max = " + MAX_X);
+				// Log.i("byz", "state = " + mTouchState + ", dx = " + dx
+				// + ", max = " + MAX_X);
 				if (mTouchState != TOUCH_STATE_X && Math.abs(dy) > MAX_Y) {
 					mTouchState = TOUCH_STATE_Y;
 				}
@@ -123,9 +124,7 @@ public class SwipeMenuListView extends ListView {
 		case MotionEvent.ACTION_UP:
 			if (mTouchState == TOUCH_STATE_X) {
 				if (mTouchView != null) {
-					if (!mTouchView.onSwipe(ev)) {
-						break;
-					}
+					mTouchView.onSwipe(ev);
 				}
 				getSelector().setState(new int[] { 0 });
 				return true;
