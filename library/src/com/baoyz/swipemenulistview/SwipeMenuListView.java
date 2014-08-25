@@ -1,9 +1,9 @@
 package com.baoyz.swipemenulistview;
 
-
 import android.content.Context;
 import android.support.v4.view.MotionEventCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,12 +18,12 @@ import android.widget.ListView;
  */
 public class SwipeMenuListView extends ListView {
 
-	private static int MAX_Y = 5;
-	private static int MAX_X = 3;
 	private static final int TOUCH_STATE_NONE = 0;
 	private static final int TOUCH_STATE_X = 1;
 	private static final int TOUCH_STATE_Y = 2;
 
+	private int MAX_Y = 5;
+	private int MAX_X = 3;
 	private float mDownX;
 	private float mDownY;
 	private int mTouchState;
@@ -103,17 +103,20 @@ public class SwipeMenuListView extends ListView {
 		case MotionEvent.ACTION_MOVE:
 			float dy = Math.abs((ev.getY() - mDownY));
 			float dx = Math.abs((ev.getX() - mDownX));
-			if (mTouchState != TOUCH_STATE_X && Math.abs(dy) > MAX_Y) {
-				mTouchState = TOUCH_STATE_Y;
-			}
-			if (mTouchState != TOUCH_STATE_Y && dx > MAX_X) {
-				mTouchState = TOUCH_STATE_X;
-			}
 			if (mTouchState == TOUCH_STATE_X) {
 				// 滑动
 				if (mTouchView != null) {
 					mTouchView.onSwipe(ev);
 					return true;
+				}
+			} else {
+				Log.i("byz", "state = " + mTouchState + ", dx = " + dx
+						+ ", max = " + MAX_X);
+				if (mTouchState != TOUCH_STATE_X && Math.abs(dy) > MAX_Y) {
+					mTouchState = TOUCH_STATE_Y;
+				}
+				if (mTouchState != TOUCH_STATE_Y && dx > MAX_X) {
+					mTouchState = TOUCH_STATE_X;
 				}
 			}
 			break;

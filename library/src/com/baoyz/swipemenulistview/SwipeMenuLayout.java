@@ -138,6 +138,7 @@ public class SwipeMenuLayout extends RelativeLayout {
 			mDownX = (int) event.getX();
 			break;
 		case MotionEvent.ACTION_MOVE:
+			Log.i("byz", "swipe downX = " + mDownX + ", moveX = " + event.getX());
 			int dis = (int) (mDownX - event.getX());
 			if (state == STATE_OPEN) {
 				dis += mMenuView.getWidth();
