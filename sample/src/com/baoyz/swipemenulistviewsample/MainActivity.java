@@ -3,8 +3,10 @@ package com.baoyz.swipemenulistviewsample;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -12,9 +14,12 @@ import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
@@ -91,6 +96,7 @@ public class MainActivity extends Activity {
 	}
 
 	private void delete(ApplicationInfo item) {
+		// delete app
 		try {
 			Intent intent = new Intent(Intent.ACTION_DELETE);
 			intent.setData(Uri.fromParts("package", item.packageName, null));
@@ -100,13 +106,24 @@ public class MainActivity extends Activity {
 	}
 
 	private void open(ApplicationInfo item) {
-		try {
-			Intent intent = new Intent();
-			intent.setPackage(item.packageName);
+		// open app
+		Intent resolveIntent = new Intent(Intent.ACTION_MAIN, null);
+		resolveIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+		resolveIntent.setPackage(item.packageName);
+		List<ResolveInfo> resolveInfoList = getPackageManager()
+				.queryIntentActivities(resolveIntent, 0);
+		if (resolveInfoList != null && resolveInfoList.size() > 0) {
+			ResolveInfo resolveInfo = resolveInfoList.get(0);
+			String activityPackageName = resolveInfo.activityInfo.packageName;
+			String className = resolveInfo.activityInfo.name;
+
+			Intent intent = new Intent(Intent.ACTION_MAIN);
 			intent.addCategory(Intent.CATEGORY_LAUNCHER);
+			ComponentName componentName = new ComponentName(
+					activityPackageName, className);
+
+			intent.setComponent(componentName);
 			startActivity(intent);
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 

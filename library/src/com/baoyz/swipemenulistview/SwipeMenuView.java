@@ -1,6 +1,5 @@
 package com.baoyz.swipemenulistview;
 
-
 import java.util.List;
 
 import android.text.TextUtils;
@@ -20,6 +19,7 @@ import android.widget.TextView;
 public class SwipeMenuView extends LinearLayout implements OnClickListener {
 
 	private SwipeMenuListView mListView;
+	private SwipeMenuLayout mLayout;
 	private SwipeMenu mMenu;
 	private OnItemClickListener onItemClickListener;
 	private int position;
@@ -81,7 +81,7 @@ public class SwipeMenuView extends LinearLayout implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		if (onItemClickListener != null) {
+		if (onItemClickListener != null && mLayout.isOpen()) {
 			onItemClickListener.onItemClick(this, mMenu, v.getId());
 		}
 	}
@@ -92,6 +92,10 @@ public class SwipeMenuView extends LinearLayout implements OnClickListener {
 
 	public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
 		this.onItemClickListener = onItemClickListener;
+	}
+
+	public void setLayout(SwipeMenuLayout mLayout) {
+		this.mLayout = mLayout;
 	}
 
 	public static interface OnItemClickListener {
