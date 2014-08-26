@@ -109,6 +109,7 @@ public class SwipeMenuListView extends ListView {
 				if (mTouchView != null) {
 					mTouchView.onSwipe(ev);
 				}
+				getSelector().setState(new int[] { 0 });
 				return true;
 			} else {
 				// Log.i("byz", "state = " + mTouchState + ", dx = " + dx
@@ -126,7 +127,6 @@ public class SwipeMenuListView extends ListView {
 				if (mTouchView != null) {
 					mTouchView.onSwipe(ev);
 				}
-				getSelector().setState(new int[] { 0 });
 				return true;
 			}
 			break;
