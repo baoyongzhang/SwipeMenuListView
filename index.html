@@ -34,7 +34,7 @@
         <h1>
 <a name="swipemenulistview" class="anchor" href="#swipemenulistview"><span class="octicon octicon-link"></span></a>SwipeMenuListView</h1>
 
-<p>a SwipeMenu of ListView.</p>
+<p>A SwipeMenu of ListView.</p>
 
 <h1>
 <a name="demo" class="anchor" href="#demo"><span class="octicon octicon-link"></span></a>Demo</h1>
@@ -48,7 +48,9 @@
 <h3>
 <a name="step-1" class="anchor" href="#step-1"><span class="octicon octicon-link"></span></a>Step 1</h3>
 
-<div class="highlight highlight-xml"><pre><span class="nt">&lt;com.baoyz.swipemenulistview.SwipeMenuListView</span>
+<ul>
+<li>add SwipeMenuListView in layout xml</li>
+</ul><div class="highlight highlight-xml"><pre><span class="nt">&lt;com.baoyz.swipemenulistview.SwipeMenuListView</span>
         <span class="na">android:id=</span><span class="s">"@+id/listView"</span>
         <span class="na">android:layout_width=</span><span class="s">"match_parent"</span>
         <span class="na">android:layout_height=</span><span class="s">"match_parent"</span> <span class="nt">/&gt;</span>
@@ -57,59 +59,81 @@
 <h3>
 <a name="step-2" class="anchor" href="#step-2"><span class="octicon octicon-link"></span></a>Step 2</h3>
 
-<div class="highlight highlight-java"><pre>        <span class="n">SwipeMenuCreator</span> <span class="n">creator</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">SwipeMenuCreator</span><span class="o">()</span> <span class="o">{</span>
+<ul>
+<li>create a SwipeMenuCreator to add items.</li>
+</ul><div class="highlight highlight-java"><pre><span class="n">SwipeMenuCreator</span> <span class="n">creator</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">SwipeMenuCreator</span><span class="o">()</span> <span class="o">{</span>
 
-            <span class="nd">@Override</span>
-            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">create</span><span class="o">(</span><span class="n">SwipeMenu</span> <span class="n">menu</span><span class="o">)</span> <span class="o">{</span>
-                <span class="c1">// create "open" item</span>
-                <span class="n">SwipeMenuItem</span> <span class="n">openItem</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">SwipeMenuItem</span><span class="o">(</span>
-                        <span class="n">getApplicationContext</span><span class="o">());</span>
-                <span class="n">openItem</span><span class="o">.</span><span class="na">setBackground</span><span class="o">(</span><span class="k">new</span> <span class="nf">ColorDrawable</span><span class="o">(</span><span class="n">Color</span><span class="o">.</span><span class="na">rgb</span><span class="o">(</span><span class="mh">0xC9</span><span class="o">,</span> <span class="mh">0xC9</span><span class="o">,</span>
-                        <span class="mh">0xCE</span><span class="o">)));</span>
-                <span class="n">openItem</span><span class="o">.</span><span class="na">setWidth</span><span class="o">(</span><span class="n">dp2px</span><span class="o">(</span><span class="mi">90</span><span class="o">));</span>
-                <span class="n">openItem</span><span class="o">.</span><span class="na">setTitle</span><span class="o">(</span><span class="s">"Open"</span><span class="o">);</span>
-                <span class="n">openItem</span><span class="o">.</span><span class="na">setTitleSize</span><span class="o">(</span><span class="mi">18</span><span class="o">);</span>
-                <span class="n">openItem</span><span class="o">.</span><span class="na">setTitleColor</span><span class="o">(</span><span class="n">Color</span><span class="o">.</span><span class="na">WHITE</span><span class="o">);</span>
-                <span class="c1">// add to menu</span>
-                <span class="n">menu</span><span class="o">.</span><span class="na">addMenuItem</span><span class="o">(</span><span class="n">openItem</span><span class="o">);</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">create</span><span class="o">(</span><span class="n">SwipeMenu</span> <span class="n">menu</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">// create "open" item</span>
+        <span class="n">SwipeMenuItem</span> <span class="n">openItem</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">SwipeMenuItem</span><span class="o">(</span>
+                <span class="n">getApplicationContext</span><span class="o">());</span>
+        <span class="c1">// set item background</span>
+        <span class="n">openItem</span><span class="o">.</span><span class="na">setBackground</span><span class="o">(</span><span class="k">new</span> <span class="nf">ColorDrawable</span><span class="o">(</span><span class="n">Color</span><span class="o">.</span><span class="na">rgb</span><span class="o">(</span><span class="mh">0xC9</span><span class="o">,</span> <span class="mh">0xC9</span><span class="o">,</span>
+                <span class="mh">0xCE</span><span class="o">)));</span>
+        <span class="c1">// set item width</span>
+        <span class="n">openItem</span><span class="o">.</span><span class="na">setWidth</span><span class="o">(</span><span class="n">dp2px</span><span class="o">(</span><span class="mi">90</span><span class="o">));</span>
+        <span class="c1">// set item title</span>
+        <span class="n">openItem</span><span class="o">.</span><span class="na">setTitle</span><span class="o">(</span><span class="s">"Open"</span><span class="o">);</span>
+        <span class="c1">// set item title fontsize</span>
+        <span class="n">openItem</span><span class="o">.</span><span class="na">setTitleSize</span><span class="o">(</span><span class="mi">18</span><span class="o">);</span>
+        <span class="c1">// set item title font color</span>
+        <span class="n">openItem</span><span class="o">.</span><span class="na">setTitleColor</span><span class="o">(</span><span class="n">Color</span><span class="o">.</span><span class="na">WHITE</span><span class="o">);</span>
+        <span class="c1">// add to menu</span>
+        <span class="n">menu</span><span class="o">.</span><span class="na">addMenuItem</span><span class="o">(</span><span class="n">openItem</span><span class="o">);</span>
 
-                <span class="c1">// create "delete" item</span>
-                <span class="n">SwipeMenuItem</span> <span class="n">deleteItem</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">SwipeMenuItem</span><span class="o">(</span>
-                        <span class="n">getApplicationContext</span><span class="o">());</span>
-                <span class="n">deleteItem</span><span class="o">.</span><span class="na">setBackground</span><span class="o">(</span><span class="k">new</span> <span class="nf">ColorDrawable</span><span class="o">(</span><span class="n">Color</span><span class="o">.</span><span class="na">rgb</span><span class="o">(</span><span class="mh">0xF9</span><span class="o">,</span>
-                        <span class="mh">0x3F</span><span class="o">,</span> <span class="mh">0x25</span><span class="o">)));</span>
-                <span class="n">deleteItem</span><span class="o">.</span><span class="na">setWidth</span><span class="o">(</span><span class="n">dp2px</span><span class="o">(</span><span class="mi">90</span><span class="o">));</span>
-                <span class="n">deleteItem</span><span class="o">.</span><span class="na">setTitleSize</span><span class="o">(</span><span class="mi">18</span><span class="o">);</span>
-                <span class="n">deleteItem</span><span class="o">.</span><span class="na">setTitleColor</span><span class="o">(</span><span class="n">Color</span><span class="o">.</span><span class="na">WHITE</span><span class="o">);</span>
-                <span class="n">deleteItem</span><span class="o">.</span><span class="na">setIcon</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">drawable</span><span class="o">.</span><span class="na">ic_delete</span><span class="o">);</span>
-                <span class="c1">// add to menu</span>
-                <span class="n">menu</span><span class="o">.</span><span class="na">addMenuItem</span><span class="o">(</span><span class="n">deleteItem</span><span class="o">);</span>
-            <span class="o">}</span>
-        <span class="o">};</span>
-        <span class="c1">// set creator</span>
-        <span class="n">listView</span><span class="o">.</span><span class="na">setMenuCreator</span><span class="o">(</span><span class="n">creator</span><span class="o">);</span>
+        <span class="c1">// create "delete" item</span>
+        <span class="n">SwipeMenuItem</span> <span class="n">deleteItem</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">SwipeMenuItem</span><span class="o">(</span>
+                <span class="n">getApplicationContext</span><span class="o">());</span>
+        <span class="c1">// set item background</span>
+        <span class="n">deleteItem</span><span class="o">.</span><span class="na">setBackground</span><span class="o">(</span><span class="k">new</span> <span class="nf">ColorDrawable</span><span class="o">(</span><span class="n">Color</span><span class="o">.</span><span class="na">rgb</span><span class="o">(</span><span class="mh">0xF9</span><span class="o">,</span>
+                <span class="mh">0x3F</span><span class="o">,</span> <span class="mh">0x25</span><span class="o">)));</span>
+        <span class="c1">// set item width</span>
+        <span class="n">deleteItem</span><span class="o">.</span><span class="na">setWidth</span><span class="o">(</span><span class="n">dp2px</span><span class="o">(</span><span class="mi">90</span><span class="o">));</span>
+        <span class="c1">// set a icon</span>
+        <span class="n">deleteItem</span><span class="o">.</span><span class="na">setIcon</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">drawable</span><span class="o">.</span><span class="na">ic_delete</span><span class="o">);</span>
+        <span class="c1">// add to menu</span>
+        <span class="n">menu</span><span class="o">.</span><span class="na">addMenuItem</span><span class="o">(</span><span class="n">deleteItem</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">};</span>
+
+<span class="c1">// set creator</span>
+<span class="n">listView</span><span class="o">.</span><span class="na">setMenuCreator</span><span class="o">(</span><span class="n">creator</span><span class="o">);</span>
 </pre></div>
 
 <h3>
 <a name="step-3" class="anchor" href="#step-3"><span class="octicon octicon-link"></span></a>Step 3</h3>
 
-<div class="highlight highlight-java"><pre>        <span class="n">listView</span><span class="o">.</span><span class="na">setOnMenuItemClickListener</span><span class="o">(</span><span class="k">new</span> <span class="nf">OnMenuItemClickListener</span><span class="o">()</span> <span class="o">{</span>
-            <span class="nd">@Override</span>
-            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onMenuItemClick</span><span class="o">(</span><span class="kt">int</span> <span class="n">position</span><span class="o">,</span> <span class="n">SwipeMenu</span> <span class="n">menu</span><span class="o">,</span> <span class="kt">int</span> <span class="n">index</span><span class="o">)</span> <span class="o">{</span>
-                <span class="n">ApplicationInfo</span> <span class="n">item</span> <span class="o">=</span> <span class="n">mAppList</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">position</span><span class="o">);</span>
-                <span class="k">switch</span> <span class="o">(</span><span class="n">index</span><span class="o">)</span> <span class="o">{</span>
-                <span class="k">case</span> <span class="mi">0</span><span class="o">:</span>
-                    <span class="c1">// open</span>
-                    <span class="n">open</span><span class="o">(</span><span class="n">item</span><span class="o">);</span>
-                    <span class="k">break</span><span class="o">;</span>
-                <span class="k">case</span> <span class="mi">1</span><span class="o">:</span>
-                    <span class="c1">// delete</span>
-                    <span class="n">delete</span><span class="o">(</span><span class="n">item</span><span class="o">);</span>
-                    <span class="k">break</span><span class="o">;</span>
-                <span class="o">}</span>
-            <span class="o">}</span>
-        <span class="o">});</span>
+<ul>
+<li>listener item click event</li>
+</ul><div class="highlight highlight-java"><pre><span class="n">listView</span><span class="o">.</span><span class="na">setOnMenuItemClickListener</span><span class="o">(</span><span class="k">new</span> <span class="nf">OnMenuItemClickListener</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onMenuItemClick</span><span class="o">(</span><span class="kt">int</span> <span class="n">position</span><span class="o">,</span> <span class="n">SwipeMenu</span> <span class="n">menu</span><span class="o">,</span> <span class="kt">int</span> <span class="n">index</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">switch</span> <span class="o">(</span><span class="n">index</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">case</span> <span class="mi">0</span><span class="o">:</span>
+            <span class="c1">// open</span>
+            <span class="k">break</span><span class="o">;</span>
+        <span class="k">case</span> <span class="mi">1</span><span class="o">:</span>
+            <span class="c1">// delete</span>
+            <span class="k">break</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">});</span>
 </pre></div>
+
+<h3>
+<a name="other" class="anchor" href="#other"><span class="octicon octicon-link"></span></a>Other</h3>
+
+<ul>
+<li>Open/Close Animation Interpolator</li>
+</ul><div class="highlight highlight-java"><pre><span class="c1">// Close Interpolator</span>
+<span class="n">listView</span><span class="o">.</span><span class="na">setCloseInterpolator</span><span class="o">(</span><span class="k">new</span> <span class="nf">BounceInterpolator</span><span class="o">());</span>
+<span class="c1">// Open Interpolator</span>
+<span class="n">listView</span><span class="o">.</span><span class="na">setOpenInterpolator</span><span class="o">(...);</span>
+</pre></div>
+
+<p>
+   <img src="demo2.gif" width="320" alt="Screenshot"></p>
       </section>
     </div>
 
