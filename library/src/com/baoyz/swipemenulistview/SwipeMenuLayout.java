@@ -13,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.animation.AnticipateOvershootInterpolator;
+import android.view.animation.Interpolator;
 import android.widget.RelativeLayout;
 
 /**
@@ -38,12 +39,22 @@ public class SwipeMenuLayout extends RelativeLayout {
 	private boolean isFling;
 	private int MIN_FLING = dp2px(15);
 	private int MAX_VELOCITYX = -dp2px(500);
-	private ScrollerCompat mScroller;
+	private ScrollerCompat mOpenScroller;
+	private ScrollerCompat mCloseScroller;
 	private int mBaseX;
 	private int position;
+	private Interpolator mCloseInterpolator;
+	private Interpolator mOpenInterpolator;
 
 	public SwipeMenuLayout(View contentView, SwipeMenuView menuView) {
+		this(contentView, menuView, null, null);
+	}
+
+	public SwipeMenuLayout(View contentView, SwipeMenuView menuView,
+			Interpolator closeInterpolator, Interpolator openInterpolator) {
 		super(contentView.getContext());
+		mCloseInterpolator = closeInterpolator;
+		mOpenInterpolator = openInterpolator;
 		mContentView = contentView;
 		mMenuView = menuView;
 		mMenuView.setLayout(this);
@@ -96,7 +107,16 @@ public class SwipeMenuLayout extends RelativeLayout {
 
 		// mScroller = ScrollerCompat.create(getContext(), new
 		// BounceInterpolator());
-		mScroller = ScrollerCompat.create(getContext());
+		if (mCloseInterpolator != null) {
+			mCloseScroller = ScrollerCompat.create(getContext(), mCloseInterpolator);
+		}else{
+			mCloseScroller = ScrollerCompat.create(getContext());
+		}
+		if (mOpenInterpolator != null) {
+			mOpenScroller = ScrollerCompat.create(getContext(), mOpenInterpolator);
+		}else{
+			mOpenScroller = ScrollerCompat.create(getContext());
+		}
 
 		LayoutParams contentParams = new LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
@@ -197,27 +217,29 @@ public class SwipeMenuLayout extends RelativeLayout {
 
 	@Override
 	public void computeScroll() {
-		if (mScroller.computeScrollOffset()) {
-			if (state == STATE_OPEN) {
-				swpie(mScroller.getCurrX());
-			} else {
-				swpie(mBaseX - mScroller.getCurrX());
+		if (state == STATE_OPEN) {
+			if (mOpenScroller.computeScrollOffset()) {
+					swpie(mOpenScroller.getCurrX());
+					postInvalidate();
 			}
-			postInvalidate();
 		} else {
+			if (mCloseScroller.computeScrollOffset()) {
+				swpie(mBaseX - mCloseScroller.getCurrX());
+				postInvalidate();
+			}
 		}
 	}
 
 	public void smoothCloseMenu() {
 		state = STATE_CLOSE;
 		mBaseX = -mContentView.getLeft();
-		mScroller.startScroll(0, 0, mBaseX, 0, 350);
+		mCloseScroller.startScroll(0, 0, mBaseX, 0, 350);
 		postInvalidate();
 	}
 
 	public void smoothOpenMenu() {
 		state = STATE_OPEN;
-		mScroller.startScroll(-mContentView.getLeft(), 0, mMenuView.getWidth(),
+		mOpenScroller.startScroll(-mContentView.getLeft(), 0, mMenuView.getWidth(),
 				0, 350);
 		postInvalidate();
 	}

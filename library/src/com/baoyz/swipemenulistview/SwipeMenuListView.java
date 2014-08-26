@@ -1,5 +1,6 @@
 package com.baoyz.swipemenulistview;
 
+import android.R.interpolator;
 import android.content.Context;
 import android.support.v4.view.MotionEventCompat;
 import android.util.AttributeSet;
@@ -7,6 +8,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Interpolator;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -32,6 +34,8 @@ public class SwipeMenuListView extends ListView {
 
 	private SwipeMenuCreator mMenuCreator;
 	private OnMenuItemClickListener mOnMenuItemClickListener;
+	private Interpolator mCloseInterpolator;
+	private Interpolator mOpenInterpolator;
 
 	public SwipeMenuListView(Context context) {
 		super(context);
@@ -76,6 +80,22 @@ public class SwipeMenuListView extends ListView {
 				}
 			}
 		});
+	}
+	
+	public void setCloseInterpolator(Interpolator interpolator){
+		mCloseInterpolator = interpolator;
+	}
+	
+	public void setOpenInterpolator(Interpolator interpolator){
+		mOpenInterpolator = interpolator;
+	}
+	
+	public Interpolator getOpenInterpolator(){
+		return mOpenInterpolator;
+	}
+	
+	public Interpolator getCloseInterpolator(){
+		return mCloseInterpolator;
 	}
 	
 	@Override

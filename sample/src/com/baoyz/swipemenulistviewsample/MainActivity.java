@@ -14,6 +14,9 @@ import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnticipateInterpolator;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -65,8 +68,6 @@ public class MainActivity extends Activity {
 				deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
 						0x3F, 0x25)));
 				deleteItem.setWidth(dp2px(90));
-				deleteItem.setTitleSize(18);
-				deleteItem.setTitleColor(Color.WHITE);
 				deleteItem.setIcon(R.drawable.ic_delete);
 				// add to menu
 				menu.addMenuItem(deleteItem);
@@ -93,6 +94,8 @@ public class MainActivity extends Activity {
 			}
 		});
 
+		// other setting
+		listView.setCloseInterpolator(new BounceInterpolator());
 	}
 
 	private void delete(ApplicationInfo item) {
