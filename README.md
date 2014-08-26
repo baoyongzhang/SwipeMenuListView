@@ -74,15 +74,12 @@ listView.setMenuCreator(creator);
 listView.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 	@Override
 	public void onMenuItemClick(int position, SwipeMenu menu, int index) {
-		ApplicationInfo item = mAppList.get(position);
 		switch (index) {
 		case 0:
 			// open
-			open(item);
 			break;
 		case 1:
 			// delete
-			delete(item);
 			break;
 		}
 	}
