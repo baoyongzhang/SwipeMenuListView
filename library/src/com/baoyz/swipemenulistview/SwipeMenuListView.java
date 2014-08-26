@@ -77,6 +77,11 @@ public class SwipeMenuListView extends ListView {
 			}
 		});
 	}
+	
+	@Override
+	public boolean onInterceptTouchEvent(MotionEvent ev) {
+		return super.onInterceptTouchEvent(ev);
+	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent ev) {
@@ -127,6 +132,8 @@ public class SwipeMenuListView extends ListView {
 				if (mTouchView != null) {
 					mTouchView.onSwipe(ev);
 				}
+				ev.setAction(MotionEvent.ACTION_CANCEL);
+				super.onTouchEvent(ev);
 				return true;
 			}
 			break;
