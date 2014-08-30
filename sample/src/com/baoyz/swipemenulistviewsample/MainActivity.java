@@ -101,8 +101,9 @@ public class MainActivity extends Activity {
 		});
 
 		// other setting
-		listView.setCloseInterpolator(new BounceInterpolator());
+//		listView.setCloseInterpolator(new BounceInterpolator());
 
+		// test item long click
 		listView.setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override

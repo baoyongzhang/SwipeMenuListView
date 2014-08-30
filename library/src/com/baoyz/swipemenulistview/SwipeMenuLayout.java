@@ -1,19 +1,20 @@
 package com.baoyz.swipemenulistview;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.widget.ScrollerCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver.OnDrawListener;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
-import android.view.animation.AnticipateOvershootInterpolator;
 import android.view.animation.Interpolator;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 /**
@@ -22,7 +23,7 @@ import android.widget.RelativeLayout;
  * @date 2014-8-23
  * 
  */
-public class SwipeMenuLayout extends RelativeLayout {
+public class SwipeMenuLayout extends FrameLayout {
 
 	private static final int CONTENT_VIEW_ID = 1;
 	private static final int MENU_VIEW_ID = 2;
@@ -61,9 +62,10 @@ public class SwipeMenuLayout extends RelativeLayout {
 		init();
 	}
 
-	private SwipeMenuLayout(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-	}
+	// private SwipeMenuLayout(Context context, AttributeSet attrs, int
+	// defStyle) {
+	// super(context, attrs, defStyle);
+	// }
 
 	private SwipeMenuLayout(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -98,7 +100,7 @@ public class SwipeMenuLayout extends RelativeLayout {
 						&& velocityX < MAX_VELOCITYX) {
 					isFling = true;
 				}
-				Log.i("byz", MAX_VELOCITYX + ", velocityX = " + velocityX);
+				// Log.i("byz", MAX_VELOCITYX + ", velocityX = " + velocityX);
 				return super.onFling(e1, e2, velocityX, velocityY);
 			}
 		};
@@ -108,13 +110,15 @@ public class SwipeMenuLayout extends RelativeLayout {
 		// mScroller = ScrollerCompat.create(getContext(), new
 		// BounceInterpolator());
 		if (mCloseInterpolator != null) {
-			mCloseScroller = ScrollerCompat.create(getContext(), mCloseInterpolator);
-		}else{
+			mCloseScroller = ScrollerCompat.create(getContext(),
+					mCloseInterpolator);
+		} else {
 			mCloseScroller = ScrollerCompat.create(getContext());
 		}
 		if (mOpenInterpolator != null) {
-			mOpenScroller = ScrollerCompat.create(getContext(), mOpenInterpolator);
-		}else{
+			mOpenScroller = ScrollerCompat.create(getContext(),
+					mOpenInterpolator);
+		} else {
 			mOpenScroller = ScrollerCompat.create(getContext());
 		}
 
@@ -127,26 +131,28 @@ public class SwipeMenuLayout extends RelativeLayout {
 
 		mMenuView.setId(MENU_VIEW_ID);
 		mMenuView.setVisibility(View.GONE);
+		mMenuView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
+				LayoutParams.MATCH_PARENT));
 
-		addView(mMenuView);
 		addView(mContentView);
+		addView(mMenuView);
 
-		if (mContentView.getBackground() == null) {
-			mContentView.setBackgroundColor(Color.WHITE);
-		}
+		// if (mContentView.getBackground() == null) {
+		// mContentView.setBackgroundColor(Color.WHITE);
+		// }
 
-		getViewTreeObserver().addOnGlobalLayoutListener(
-				new OnGlobalLayoutListener() {
-					@Override
-					public void onGlobalLayout() {
-						LayoutParams params = (LayoutParams) mMenuView
-								.getLayoutParams();
-						params.height = mContentView.getHeight();
-						mMenuView.setLayoutParams(mMenuView.getLayoutParams());
-						getViewTreeObserver()
-								.removeGlobalOnLayoutListener(this);
-					}
-				});
+		// getViewTreeObserver().addOnGlobalLayoutListener(
+		// new OnGlobalLayoutListener() {
+		// @Override
+		// public void onGlobalLayout() {
+		// LayoutParams params = (LayoutParams) mMenuView
+		// .getLayoutParams();
+		// params.height = mContentView.getHeight();
+		// mMenuView.setLayoutParams(mMenuView.getLayoutParams());
+		// getViewTreeObserver()
+		// .removeGlobalOnLayoutListener(this);
+		// }
+		// });
 
 	}
 
@@ -173,7 +179,7 @@ public class SwipeMenuLayout extends RelativeLayout {
 			if (state == STATE_OPEN) {
 				dis += mMenuView.getWidth();
 			}
-			swpie(dis);
+			swipe(dis);
 			break;
 		case MotionEvent.ACTION_UP:
 			if (isFling || (mDownX - event.getX()) > (mMenuView.getWidth() / 2)) {
@@ -198,7 +204,7 @@ public class SwipeMenuLayout extends RelativeLayout {
 		return super.onTouchEvent(event);
 	}
 
-	private void swpie(int dis) {
+	private void swipe(int dis) {
 		if (mMenuView.getVisibility() == View.GONE) {
 			mMenuView.setVisibility(View.VISIBLE);
 		}
@@ -208,8 +214,8 @@ public class SwipeMenuLayout extends RelativeLayout {
 		if (dis < 0) {
 			dis = 0;
 		}
-		mContentView.layout(-dis, mContentView.getTop(),
-				mContentView.getWidth() - dis, mContentView.getBottom());
+		mContentView.layout(-dis, mContentView.getTop(), mContentView.getWidth() - dis,
+				getMeasuredHeight());
 		mMenuView.layout(mContentView.getWidth() - dis, mMenuView.getTop(),
 				mContentView.getWidth() + mMenuView.getWidth() - dis,
 				mMenuView.getBottom());
@@ -219,12 +225,12 @@ public class SwipeMenuLayout extends RelativeLayout {
 	public void computeScroll() {
 		if (state == STATE_OPEN) {
 			if (mOpenScroller.computeScrollOffset()) {
-					swpie(mOpenScroller.getCurrX());
-					postInvalidate();
+				swipe(mOpenScroller.getCurrX());
+				postInvalidate();
 			}
 		} else {
 			if (mCloseScroller.computeScrollOffset()) {
-				swpie(mBaseX - mCloseScroller.getCurrX());
+				swipe(mBaseX - mCloseScroller.getCurrX());
 				postInvalidate();
 			}
 		}
@@ -239,22 +245,22 @@ public class SwipeMenuLayout extends RelativeLayout {
 
 	public void smoothOpenMenu() {
 		state = STATE_OPEN;
-		mOpenScroller.startScroll(-mContentView.getLeft(), 0, mMenuView.getWidth(),
-				0, 350);
+		mOpenScroller.startScroll(-mContentView.getLeft(), 0,
+				mMenuView.getWidth(), 0, 350);
 		postInvalidate();
 	}
 
 	public void closeMenu() {
 		if (state == STATE_OPEN) {
 			state = STATE_CLOSE;
-			swpie(0);
+			swipe(0);
 		}
 	}
 
 	public void openMenu() {
 		if (state == STATE_CLOSE) {
 			state = STATE_OPEN;
-			swpie(mMenuView.getWidth());
+			swipe(mMenuView.getWidth());
 		}
 	}
 
@@ -269,5 +275,14 @@ public class SwipeMenuLayout extends RelativeLayout {
 	private int dp2px(int dp) {
 		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
 				getContext().getResources().getDisplayMetrics());
+	}
+
+	@Override
+	protected void onLayout(boolean changed, int l, int t, int r, int b) {
+		mContentView.layout(0, 0, getMeasuredWidth(), getMeasuredHeight());
+		mMenuView.layout(getMeasuredWidth(), 0,
+				getMeasuredWidth() + mMenuView.getMeasuredWidth(),
+				getMeasuredHeight());
+		// bringChildToFront(mContentView);
 	}
 }
