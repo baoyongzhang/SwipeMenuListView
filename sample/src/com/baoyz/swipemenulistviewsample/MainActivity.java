@@ -14,11 +14,9 @@ import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnticipateInterpolator;
 import android.view.animation.BounceInterpolator;
-import android.view.animation.OvershootInterpolator;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -104,6 +102,16 @@ public class MainActivity extends Activity {
 
 		// other setting
 		listView.setCloseInterpolator(new BounceInterpolator());
+
+		listView.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				Toast.makeText(getApplicationContext(), position + " long click", 0).show();
+				return false;
+			}
+		});
 	}
 
 	private void delete(ApplicationInfo item) {
