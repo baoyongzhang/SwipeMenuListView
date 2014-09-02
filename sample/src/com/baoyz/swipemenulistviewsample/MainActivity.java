@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.BounceInterpolator;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -31,6 +32,7 @@ import com.baoyz.swipemenulistview.SwipeMenuListView.OnMenuItemClickListener;
 public class MainActivity extends Activity {
 
 	private List<ApplicationInfo> mAppList;
+	private AppAdapter mAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +42,8 @@ public class MainActivity extends Activity {
 		mAppList = getPackageManager().getInstalledApplications(0);
 
 		SwipeMenuListView listView = (SwipeMenuListView) findViewById(R.id.listView);
-		AppAdapter adapter = new AppAdapter();
-		listView.setAdapter(adapter);
+		mAdapter = new AppAdapter();
+		listView.setAdapter(mAdapter);
 
 		// step 1. create a MenuCreator
 		SwipeMenuCreator creator = new SwipeMenuCreator() {
@@ -94,7 +96,9 @@ public class MainActivity extends Activity {
 					break;
 				case 1:
 					// delete
-					delete(item);
+//					delete(item);
+					mAppList.remove(position);
+					mAdapter.notifyDataSetChanged();
 					break;
 				}
 			}
@@ -102,7 +106,7 @@ public class MainActivity extends Activity {
 
 		// other setting
 //		listView.setCloseInterpolator(new BounceInterpolator());
-
+		
 		// test item long click
 		listView.setOnItemLongClickListener(new OnItemLongClickListener() {
 

@@ -105,7 +105,7 @@ public class SwipeMenuListView extends ListView {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent ev) {
-		int action = MotionEventCompat.getActionMasked(ev); // TODO 待研究
+		int action = MotionEventCompat.getActionMasked(ev);
 		action = ev.getAction();
 		switch (action) {
 		case MotionEvent.ACTION_DOWN:
@@ -130,7 +130,6 @@ public class SwipeMenuListView extends ListView {
 			float dy = Math.abs((ev.getY() - mDownY));
 			float dx = Math.abs((ev.getX() - mDownX));
 			if (mTouchState == TOUCH_STATE_X) {
-				// 滑动
 				if (mTouchView != null) {
 					mTouchView.onSwipe(ev);
 				}
