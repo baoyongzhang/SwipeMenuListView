@@ -31,6 +31,7 @@ public class SwipeMenuListView extends ListView {
 	private int mTouchState;
 	private int mTouchPosition;
 	private SwipeMenuLayout mTouchView;
+	private OnSwipeListener mOnSwipeListener;
 
 	private SwipeMenuCreator mMenuCreator;
 	private OnMenuItemClickListener mOnMenuItemClickListener;
@@ -81,23 +82,23 @@ public class SwipeMenuListView extends ListView {
 			}
 		});
 	}
-	
-	public void setCloseInterpolator(Interpolator interpolator){
+
+	public void setCloseInterpolator(Interpolator interpolator) {
 		mCloseInterpolator = interpolator;
 	}
-	
-	public void setOpenInterpolator(Interpolator interpolator){
+
+	public void setOpenInterpolator(Interpolator interpolator) {
 		mOpenInterpolator = interpolator;
 	}
-	
-	public Interpolator getOpenInterpolator(){
+
+	public Interpolator getOpenInterpolator() {
 		return mOpenInterpolator;
 	}
-	
-	public Interpolator getCloseInterpolator(){
+
+	public Interpolator getCloseInterpolator() {
 		return mCloseInterpolator;
 	}
-	
+
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
 		return super.onInterceptTouchEvent(ev);
@@ -105,9 +106,9 @@ public class SwipeMenuListView extends ListView {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent ev) {
-		if(ev.getAction() != MotionEvent.ACTION_DOWN && mTouchView == null)
+		if (ev.getAction() != MotionEvent.ACTION_DOWN && mTouchView == null)
 			return super.onTouchEvent(ev);
-		int action = MotionEventCompat.getActionMasked(ev); 
+		int action = MotionEventCompat.getActionMasked(ev);
 		action = ev.getAction();
 		switch (action) {
 		case MotionEvent.ACTION_DOWN:
@@ -117,7 +118,7 @@ public class SwipeMenuListView extends ListView {
 
 			mTouchPosition = pointToPosition((int) ev.getX(), (int) ev.getY());
 			View view = getChildAt(mTouchPosition - getFirstVisiblePosition());
-			
+
 			if (mTouchView != null && mTouchView.isOpen()) {
 				mTouchView.smoothCloseMenu();
 				mTouchView = null;
@@ -141,14 +142,14 @@ public class SwipeMenuListView extends ListView {
 				ev.setAction(MotionEvent.ACTION_CANCEL);
 				super.onTouchEvent(ev);
 				return true;
-			} else {
-				// Log.i("byz", "state = " + mTouchState + ", dx = " + dx
-				// + ", max = " + MAX_X);
-				if (mTouchState != TOUCH_STATE_X && Math.abs(dy) > MAX_Y) {
+			} else if (mTouchState == TOUCH_STATE_NONE) {
+				if (Math.abs(dy) > MAX_Y) {
 					mTouchState = TOUCH_STATE_Y;
-				}
-				if (mTouchState != TOUCH_STATE_Y && dx > MAX_X) {
+				} else if (dx > MAX_X) {
 					mTouchState = TOUCH_STATE_X;
+					if (mOnSwipeListener != null) {
+						mOnSwipeListener.onSwipeStart(mTouchPosition);
+					}
 				}
 			}
 			break;
@@ -156,6 +157,9 @@ public class SwipeMenuListView extends ListView {
 			if (mTouchState == TOUCH_STATE_X) {
 				if (mTouchView != null) {
 					mTouchView.onSwipe(ev);
+				}
+				if (mOnSwipeListener != null) {
+					mOnSwipeListener.onSwipeEnd(mTouchPosition);
 				}
 				ev.setAction(MotionEvent.ACTION_CANCEL);
 				super.onTouchEvent(ev);
@@ -180,7 +184,17 @@ public class SwipeMenuListView extends ListView {
 		this.mOnMenuItemClickListener = onMenuItemClickListener;
 	}
 
+	public void setOnSwipeListener(OnSwipeListener onSwipeListener) {
+		this.mOnSwipeListener = onSwipeListener;
+	}
+
 	public static interface OnMenuItemClickListener {
 		void onMenuItemClick(int position, SwipeMenu menu, int index);
+	}
+
+	public static interface OnSwipeListener {
+		void onSwipeStart(int position);
+
+		void onSwipeEnd(int position);
 	}
 }

@@ -14,9 +14,7 @@ import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.BounceInterpolator;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -28,6 +26,7 @@ import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.baoyz.swipemenulistview.SwipeMenuListView.OnMenuItemClickListener;
+import com.baoyz.swipemenulistview.SwipeMenuListView.OnSwipeListener;
 
 public class MainActivity extends Activity {
 
@@ -101,6 +100,20 @@ public class MainActivity extends Activity {
 					mAdapter.notifyDataSetChanged();
 					break;
 				}
+			}
+		});
+		
+		// set SwipeListener
+		listView.setOnSwipeListener(new OnSwipeListener() {
+			
+			@Override
+			public void onSwipeStart(int position) {
+				// swipe start
+			}
+			
+			@Override
+			public void onSwipeEnd(int position) {
+				// swipe end
 			}
 		});
 
