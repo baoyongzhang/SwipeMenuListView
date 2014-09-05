@@ -88,6 +88,23 @@ listView.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 
 ### Other
 
+* OnSwipeListener
+
+```java
+listView.setOnSwipeListener(new OnSwipeListener() {
+			
+	@Override
+	public void onSwipeStart(int position) {
+		// swipe start
+	}
+	
+	@Override
+	public void onSwipeEnd(int position) {
+		// swipe end
+	}
+});
+```
+
 * Open/Close Animation Interpolator
 
 ```java
