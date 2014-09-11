@@ -6,6 +6,8 @@ A SwipeMenu of ListView.
 # Demo
 <p>
    <img src="https://raw.githubusercontent.com/baoyongzhang/SwipeMenuListView/master/demo.gif" width="320" alt="Screenshot"/>
+&nbsp;&nbsp;
+<img src="https://raw.githubusercontent.com/baoyongzhang/SwipeMenuListView/master/demo3.gif" width="320" alt="Screenshot"/>
 </p>
 
 # Usage
@@ -84,6 +86,53 @@ listView.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 		}
 	}
 });
+```
+
+### Create Different Menu
+
+* Use the ViewType of adapter
+
+```java
+	class AppAdapter extends BaseAdapter {
+
+		...
+		
+		@Override
+		public int getViewTypeCount() {
+			// menu type count
+			return 2;
+		}
+		
+		@Override
+		public int getItemViewType(int position) {
+			// current menu type
+			return type;
+		}
+
+		...
+	}
+```
+
+* Create different menus depending on the view type
+
+```java
+	SwipeMenuCreator creator = new SwipeMenuCreator() {
+
+			@Override
+			public void create(SwipeMenu menu) {
+				// Create different menus depending on the view type
+				switch (menu.getViewType()) {
+				case 0:
+					// create menu of type 0
+					break;
+				case 1:
+					// create menu of type 1
+					break;
+				...
+				}
+			}
+
+		};
 ```
 
 ### Other
