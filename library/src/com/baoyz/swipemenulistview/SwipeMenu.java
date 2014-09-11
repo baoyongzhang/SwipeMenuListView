@@ -1,6 +1,5 @@
 package com.baoyz.swipemenulistview;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +15,7 @@ public class SwipeMenu {
 
 	private Context mContext;
 	private List<SwipeMenuItem> mItems;
+	private int mViewType;
 
 	public SwipeMenu(Context context) {
 		mContext = context;
@@ -37,8 +37,17 @@ public class SwipeMenu {
 	public List<SwipeMenuItem> getMenuItems() {
 		return mItems;
 	}
-	
-	public SwipeMenuItem getMenuItem(int index){
+
+	public SwipeMenuItem getMenuItem(int index) {
 		return mItems.get(index);
 	}
+
+	public int getViewType() {
+		return mViewType;
+	}
+
+	public void setViewType(int viewType) {
+		this.mViewType = viewType;
+	}
+
 }
