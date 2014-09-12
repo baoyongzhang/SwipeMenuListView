@@ -122,6 +122,58 @@
 </pre></div>
 
 <h3>
+<a name="create-different-menu" class="anchor" href="#create-different-menu"><span class="octicon octicon-link"></span></a>Create Different Menu</h3>
+
+<ul>
+<li>Use the ViewType of adapter</li>
+</ul><div class="highlight highlight-java"><pre>    <span class="kd">class</span> <span class="nc">AppAdapter</span> <span class="kd">extends</span> <span class="n">BaseAdapter</span> <span class="o">{</span>
+
+        <span class="o">...</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getViewTypeCount</span><span class="o">()</span> <span class="o">{</span>
+            <span class="c1">// menu type count</span>
+            <span class="k">return</span> <span class="mi">2</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getItemViewType</span><span class="o">(</span><span class="kt">int</span> <span class="n">position</span><span class="o">)</span> <span class="o">{</span>
+            <span class="c1">// current menu type</span>
+            <span class="k">return</span> <span class="n">type</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="o">...</span>
+    <span class="o">}</span>
+</pre></div>
+
+<ul>
+<li>Create different menus depending on the view type</li>
+</ul><div class="highlight highlight-java"><pre>    <span class="n">SwipeMenuCreator</span> <span class="n">creator</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">SwipeMenuCreator</span><span class="o">()</span> <span class="o">{</span>
+
+            <span class="nd">@Override</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">create</span><span class="o">(</span><span class="n">SwipeMenu</span> <span class="n">menu</span><span class="o">)</span> <span class="o">{</span>
+                <span class="c1">// Create different menus depending on the view type</span>
+                <span class="k">switch</span> <span class="o">(</span><span class="n">menu</span><span class="o">.</span><span class="na">getViewType</span><span class="o">())</span> <span class="o">{</span>
+                <span class="k">case</span> <span class="mi">0</span><span class="o">:</span>
+                    <span class="c1">// create menu of type 0</span>
+                    <span class="k">break</span><span class="o">;</span>
+                <span class="k">case</span> <span class="mi">1</span><span class="o">:</span>
+                    <span class="c1">// create menu of type 1</span>
+                    <span class="k">break</span><span class="o">;</span>
+                <span class="o">...</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+
+        <span class="o">};</span>
+</pre></div>
+
+<ul>
+<li>Demo</li>
+</ul><p>
+
+<img src="https://raw.githubusercontent.com/baoyongzhang/SwipeMenuListView/master/demo3.gif" width="320" alt="Screenshot"></p>
+
+<h3>
 <a name="other" class="anchor" href="#other"><span class="octicon octicon-link"></span></a>Other</h3>
 
 <ul>
