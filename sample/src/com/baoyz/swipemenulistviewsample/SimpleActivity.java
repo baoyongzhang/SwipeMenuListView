@@ -133,6 +133,7 @@ public class SimpleActivity extends Activity {
 				return false;
 			}
 		});
+		
 	}
 
 	private void delete(ApplicationInfo item) {

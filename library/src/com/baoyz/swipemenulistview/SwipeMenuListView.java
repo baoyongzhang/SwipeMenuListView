@@ -187,6 +187,9 @@ public class SwipeMenuListView extends ListView {
 			View view = getChildAt(position - getFirstVisiblePosition());
 			if (view instanceof SwipeMenuLayout) {
 				mTouchPosition = position;
+				if (mTouchView != null && mTouchView.isOpen()) {
+					mTouchView.smoothCloseMenu();
+				}
 				mTouchView = (SwipeMenuLayout) view;
 				mTouchView.smoothOpenMenu();
 			}
