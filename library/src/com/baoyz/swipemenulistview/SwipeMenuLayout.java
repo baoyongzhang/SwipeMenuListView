@@ -10,8 +10,10 @@ import android.view.GestureDetector.OnGestureListener;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.animation.Interpolator;
+import android.widget.AbsListView;
 import android.widget.FrameLayout;
 
 /**
@@ -82,6 +84,8 @@ public class SwipeMenuLayout extends FrameLayout {
 	}
 
 	private void init() {
+		setLayoutParams(new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT,
+				LayoutParams.WRAP_CONTENT));
 		mGestureListener = new SimpleOnGestureListener() {
 			@Override
 			public boolean onDown(MotionEvent e) {
@@ -128,7 +132,7 @@ public class SwipeMenuLayout extends FrameLayout {
 
 		mMenuView.setId(MENU_VIEW_ID);
 		mMenuView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
-				LayoutParams.MATCH_PARENT));
+				LayoutParams.WRAP_CONTENT));
 
 		addView(mContentView);
 		addView(mMenuView);
@@ -138,15 +142,15 @@ public class SwipeMenuLayout extends FrameLayout {
 		// }
 
 		// in android 2.x, MenuView height is MATCH_PARENT is not work.
-//		getViewTreeObserver().addOnGlobalLayoutListener(
-//				new OnGlobalLayoutListener() {
-//					@Override
-//					public void onGlobalLayout() {
-//						setMenuHeight(mContentView.getHeight());
-//						// getViewTreeObserver()
-//						// .removeGlobalOnLayoutListener(this);
-//					}
-//				});
+		// getViewTreeObserver().addOnGlobalLayoutListener(
+		// new OnGlobalLayoutListener() {
+		// @Override
+		// public void onGlobalLayout() {
+		// setMenuHeight(mContentView.getHeight());
+		// // getViewTreeObserver()
+		// // .removeGlobalOnLayoutListener(this);
+		// }
+		// });
 
 	}
 
@@ -272,18 +276,26 @@ public class SwipeMenuLayout extends FrameLayout {
 	}
 
 	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+		mMenuView.measure(MeasureSpec.makeMeasureSpec(0,
+				MeasureSpec.UNSPECIFIED), MeasureSpec.makeMeasureSpec(
+				getMeasuredHeight(), MeasureSpec.EXACTLY));
+	}
+
+	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
-		mContentView.layout(0, 0, getMeasuredWidth(), getMeasuredHeight());
+		mContentView.layout(0, 0, getMeasuredWidth(),
+				mContentView.getMeasuredHeight());
 		mMenuView.layout(getMeasuredWidth(), 0,
 				getMeasuredWidth() + mMenuView.getMeasuredWidth(),
-				getMeasuredHeight());
-		setMenuHeight(getMeasuredHeight());
+				mContentView.getMeasuredHeight());
+		// setMenuHeight(mContentView.getMeasuredHeight());
 		// bringChildToFront(mContentView);
 	}
 
 	public void setMenuHeight(int measuredHeight) {
-		Log.i("byz", "pos = " + position + ", height = "
-				+ measuredHeight);
+		Log.i("byz", "pos = " + position + ", height = " + measuredHeight);
 		LayoutParams params = (LayoutParams) mMenuView.getLayoutParams();
 		if (params.height != measuredHeight) {
 			params.height = measuredHeight;

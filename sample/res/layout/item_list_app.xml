@@ -19,6 +19,6 @@
         android:layout_toRightOf="@+id/iv_icon"
         android:text="name"
         android:textColor="@android:color/black"
-        android:textSize="18sp" />
+        android:textSize="25sp" />
 
 </RelativeLayout>
