@@ -159,6 +159,12 @@ listView.setOnSwipeListener(new OnSwipeListener() {
 });
 ```
 
+* open menu method for SwipeMenuListView
+
+```java
+listView.smoothOpenMenu(position);
+```
+
 * Open/Close Animation Interpolator
 
 ```java
