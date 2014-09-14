@@ -1,10 +1,8 @@
 package com.baoyz.swipemenulistview;
 
-import android.R.interpolator;
 import android.content.Context;
 import android.support.v4.view.MotionEventCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
@@ -112,11 +110,20 @@ public class SwipeMenuListView extends ListView {
 		action = ev.getAction();
 		switch (action) {
 		case MotionEvent.ACTION_DOWN:
+			int oldPos = mTouchPosition;
 			mDownX = ev.getX();
 			mDownY = ev.getY();
 			mTouchState = TOUCH_STATE_NONE;
 
 			mTouchPosition = pointToPosition((int) ev.getX(), (int) ev.getY());
+
+			if (mTouchPosition == oldPos && mTouchView != null
+					&& mTouchView.isOpen()) {
+				mTouchState = TOUCH_STATE_X;
+				mTouchView.onSwipe(ev);
+				return true;
+			}
+
 			View view = getChildAt(mTouchPosition - getFirstVisiblePosition());
 
 			if (mTouchView != null && mTouchView.isOpen()) {
@@ -157,6 +164,10 @@ public class SwipeMenuListView extends ListView {
 			if (mTouchState == TOUCH_STATE_X) {
 				if (mTouchView != null) {
 					mTouchView.onSwipe(ev);
+					if (!mTouchView.isOpen()) {
+						mTouchPosition = -1;
+						mTouchView = null;
+					}
 				}
 				if (mOnSwipeListener != null) {
 					mOnSwipeListener.onSwipeEnd(mTouchPosition);
@@ -168,6 +179,18 @@ public class SwipeMenuListView extends ListView {
 			break;
 		}
 		return super.onTouchEvent(ev);
+	}
+
+	public void smoothOpenMenu(int position) {
+		if (position >= getFirstVisiblePosition()
+				&& position <= getLastVisiblePosition()) {
+			View view = getChildAt(position - getFirstVisiblePosition());
+			if (view instanceof SwipeMenuLayout) {
+				mTouchPosition = position;
+				mTouchView = (SwipeMenuLayout) view;
+				mTouchView.smoothOpenMenu();
+			}
+		}
 	}
 
 	private int dp2px(int dp) {

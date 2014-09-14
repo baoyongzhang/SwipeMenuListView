@@ -15,6 +15,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuLayout;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.baoyz.swipemenulistview.SwipeMenuListView.OnMenuItemClickListener;
 import com.baoyz.swipemenulistview.SwipeMenuListView.OnSwipeListener;
@@ -32,6 +34,7 @@ public class SimpleActivity extends Activity {
 
 	private List<ApplicationInfo> mAppList;
 	private AppAdapter mAdapter;
+	private SwipeMenuListView mListView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +43,9 @@ public class SimpleActivity extends Activity {
 
 		mAppList = getPackageManager().getInstalledApplications(0);
 
-		SwipeMenuListView listView = (SwipeMenuListView) findViewById(R.id.listView);
+		mListView = (SwipeMenuListView) findViewById(R.id.listView);
 		mAdapter = new AppAdapter();
-		listView.setAdapter(mAdapter);
+		mListView.setAdapter(mAdapter);
 
 		// step 1. create a MenuCreator
 		SwipeMenuCreator creator = new SwipeMenuCreator() {
@@ -81,10 +84,10 @@ public class SimpleActivity extends Activity {
 			}
 		};
 		// set creator
-		listView.setMenuCreator(creator);
+		mListView.setMenuCreator(creator);
 
 		// step 2. listener item click event
-		listView.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+		mListView.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			@Override
 			public void onMenuItemClick(int position, SwipeMenu menu, int index) {
 				ApplicationInfo item = mAppList.get(position);
@@ -104,7 +107,7 @@ public class SimpleActivity extends Activity {
 		});
 		
 		// set SwipeListener
-		listView.setOnSwipeListener(new OnSwipeListener() {
+		mListView.setOnSwipeListener(new OnSwipeListener() {
 			
 			@Override
 			public void onSwipeStart(int position) {
@@ -121,7 +124,7 @@ public class SimpleActivity extends Activity {
 //		listView.setCloseInterpolator(new BounceInterpolator());
 		
 		// test item long click
-		listView.setOnItemLongClickListener(new OnItemLongClickListener() {
+		mListView.setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
