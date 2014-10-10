@@ -70,11 +70,12 @@ public class SwipeMenuListView extends ListView {
 			@Override
 			public void onItemClick(SwipeMenuView view, SwipeMenu menu,
 					int index) {
+				boolean flag = false;
 				if (mOnMenuItemClickListener != null) {
-					mOnMenuItemClickListener.onMenuItemClick(
+					flag = mOnMenuItemClickListener.onMenuItemClick(
 							view.getPosition(), menu, index);
 				}
-				if (mTouchView != null) {
+				if (mTouchView != null && !flag) {
 					mTouchView.smoothCloseMenu();
 				}
 			}
@@ -215,7 +216,7 @@ public class SwipeMenuListView extends ListView {
 	}
 
 	public static interface OnMenuItemClickListener {
-		void onMenuItemClick(int position, SwipeMenu menu, int index);
+		boolean onMenuItemClick(int position, SwipeMenu menu, int index);
 	}
 
 	public static interface OnSwipeListener {

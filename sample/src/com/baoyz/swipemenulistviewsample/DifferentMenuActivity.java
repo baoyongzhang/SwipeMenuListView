@@ -112,7 +112,7 @@ public class DifferentMenuActivity extends Activity {
 		// step 2. listener item click event
 		listView.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			@Override
-			public void onMenuItemClick(int position, SwipeMenu menu, int index) {
+			public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
 				ApplicationInfo item = mAppList.get(position);
 				switch (index) {
 				case 0:
@@ -125,6 +125,7 @@ public class DifferentMenuActivity extends Activity {
 					mAdapter.notifyDataSetChanged();
 					break;
 				}
+				return false;
 			}
 		});
 
