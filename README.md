@@ -73,7 +73,7 @@ listView.setMenuCreator(creator);
 ```java
 listView.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 	@Override
-	public void onMenuItemClick(int position, SwipeMenu menu, int index) {
+	public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
 		switch (index) {
 		case 0:
 			// open
@@ -82,6 +82,8 @@ listView.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			// delete
 			break;
 		}
+		// false : close the menu; true : not close the menu
+		return false;
 	}
 });
 ```
