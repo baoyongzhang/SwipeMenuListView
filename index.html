@@ -40,7 +40,8 @@
 <a name="demo" class="anchor" href="#demo"><span class="octicon octicon-link"></span></a>Demo</h1>
 
 <p>
-   <img src="https://raw.githubusercontent.com/baoyongzhang/SwipeMenuListView/master/demo.gif" width="320" alt="Screenshot"></p>
+   <img src="https://raw.githubusercontent.com/baoyongzhang/SwipeMenuListView/master/demo.gif" width="320" alt="Screenshot">
+</p>
 
 <h1>
 <a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h1>
@@ -50,7 +51,9 @@
 
 <ul>
 <li>add SwipeMenuListView in layout xml</li>
-</ul><div class="highlight highlight-xml"><pre><span class="nt">&lt;com.baoyz.swipemenulistview.SwipeMenuListView</span>
+</ul>
+
+<div class="highlight highlight-xml"><pre><span class="nt">&lt;com.baoyz.swipemenulistview.SwipeMenuListView</span>
         <span class="na">android:id=</span><span class="s">"@+id/listView"</span>
         <span class="na">android:layout_width=</span><span class="s">"match_parent"</span>
         <span class="na">android:layout_height=</span><span class="s">"match_parent"</span> <span class="nt">/&gt;</span>
@@ -61,7 +64,9 @@
 
 <ul>
 <li>create a SwipeMenuCreator to add items.</li>
-</ul><div class="highlight highlight-java"><pre><span class="n">SwipeMenuCreator</span> <span class="n">creator</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">SwipeMenuCreator</span><span class="o">()</span> <span class="o">{</span>
+</ul>
+
+<div class="highlight highlight-java"><pre><span class="n">SwipeMenuCreator</span> <span class="n">creator</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">SwipeMenuCreator</span><span class="o">()</span> <span class="o">{</span>
 
     <span class="nd">@Override</span>
     <span class="kd">public</span> <span class="kt">void</span> <span class="nf">create</span><span class="o">(</span><span class="n">SwipeMenu</span> <span class="n">menu</span><span class="o">)</span> <span class="o">{</span>
@@ -106,9 +111,11 @@
 
 <ul>
 <li>listener item click event</li>
-</ul><div class="highlight highlight-java"><pre><span class="n">listView</span><span class="o">.</span><span class="na">setOnMenuItemClickListener</span><span class="o">(</span><span class="k">new</span> <span class="nf">OnMenuItemClickListener</span><span class="o">()</span> <span class="o">{</span>
+</ul>
+
+<div class="highlight highlight-java"><pre><span class="n">listView</span><span class="o">.</span><span class="na">setOnMenuItemClickListener</span><span class="o">(</span><span class="k">new</span> <span class="nf">OnMenuItemClickListener</span><span class="o">()</span> <span class="o">{</span>
     <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onMenuItemClick</span><span class="o">(</span><span class="kt">int</span> <span class="n">position</span><span class="o">,</span> <span class="n">SwipeMenu</span> <span class="n">menu</span><span class="o">,</span> <span class="kt">int</span> <span class="n">index</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">onMenuItemClick</span><span class="o">(</span><span class="kt">int</span> <span class="n">position</span><span class="o">,</span> <span class="n">SwipeMenu</span> <span class="n">menu</span><span class="o">,</span> <span class="kt">int</span> <span class="n">index</span><span class="o">)</span> <span class="o">{</span>
         <span class="k">switch</span> <span class="o">(</span><span class="n">index</span><span class="o">)</span> <span class="o">{</span>
         <span class="k">case</span> <span class="mi">0</span><span class="o">:</span>
             <span class="c1">// open</span>
@@ -117,6 +124,8 @@
             <span class="c1">// delete</span>
             <span class="k">break</span><span class="o">;</span>
         <span class="o">}</span>
+        <span class="c1">// false : close the menu; true : not close the menu</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
     <span class="o">}</span>
 <span class="o">});</span>
 </pre></div>
@@ -126,7 +135,9 @@
 
 <ul>
 <li>Use the ViewType of adapter</li>
-</ul><div class="highlight highlight-java"><pre>    <span class="kd">class</span> <span class="nc">AppAdapter</span> <span class="kd">extends</span> <span class="n">BaseAdapter</span> <span class="o">{</span>
+</ul>
+
+<div class="highlight highlight-java"><pre>    <span class="kd">class</span> <span class="nc">AppAdapter</span> <span class="kd">extends</span> <span class="n">BaseAdapter</span> <span class="o">{</span>
 
         <span class="o">...</span>
 
@@ -148,7 +159,9 @@
 
 <ul>
 <li>Create different menus depending on the view type</li>
-</ul><div class="highlight highlight-java"><pre>    <span class="n">SwipeMenuCreator</span> <span class="n">creator</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">SwipeMenuCreator</span><span class="o">()</span> <span class="o">{</span>
+</ul>
+
+<div class="highlight highlight-java"><pre>    <span class="n">SwipeMenuCreator</span> <span class="n">creator</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">SwipeMenuCreator</span><span class="o">()</span> <span class="o">{</span>
 
             <span class="nd">@Override</span>
             <span class="kd">public</span> <span class="kt">void</span> <span class="nf">create</span><span class="o">(</span><span class="n">SwipeMenu</span> <span class="n">menu</span><span class="o">)</span> <span class="o">{</span>
@@ -169,16 +182,21 @@
 
 <ul>
 <li>Demo</li>
-</ul><p>
+</ul>
 
-<img src="https://raw.githubusercontent.com/baoyongzhang/SwipeMenuListView/master/demo3.gif" width="320" alt="Screenshot"></p>
+<p>
+
+<img src="https://raw.githubusercontent.com/baoyongzhang/SwipeMenuListView/master/demo3.gif" width="320" alt="Screenshot">
+</p>
 
 <h3>
 <a name="other" class="anchor" href="#other"><span class="octicon octicon-link"></span></a>Other</h3>
 
 <ul>
 <li>OnSwipeListener</li>
-</ul><div class="highlight highlight-java"><pre><span class="n">listView</span><span class="o">.</span><span class="na">setOnSwipeListener</span><span class="o">(</span><span class="k">new</span> <span class="nf">OnSwipeListener</span><span class="o">()</span> <span class="o">{</span>
+</ul>
+
+<div class="highlight highlight-java"><pre><span class="n">listView</span><span class="o">.</span><span class="na">setOnSwipeListener</span><span class="o">(</span><span class="k">new</span> <span class="nf">OnSwipeListener</span><span class="o">()</span> <span class="o">{</span>
 
     <span class="nd">@Override</span>
     <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onSwipeStart</span><span class="o">(</span><span class="kt">int</span> <span class="n">position</span><span class="o">)</span> <span class="o">{</span>
@@ -193,15 +211,25 @@
 </pre></div>
 
 <ul>
+<li>open menu method for SwipeMenuListView</li>
+</ul>
+
+<div class="highlight highlight-java"><pre><span class="n">listView</span><span class="o">.</span><span class="na">smoothOpenMenu</span><span class="o">(</span><span class="n">position</span><span class="o">);</span>
+</pre></div>
+
+<ul>
 <li>Open/Close Animation Interpolator</li>
-</ul><div class="highlight highlight-java"><pre><span class="c1">// Close Interpolator</span>
+</ul>
+
+<div class="highlight highlight-java"><pre><span class="c1">// Close Interpolator</span>
 <span class="n">listView</span><span class="o">.</span><span class="na">setCloseInterpolator</span><span class="o">(</span><span class="k">new</span> <span class="nf">BounceInterpolator</span><span class="o">());</span>
 <span class="c1">// Open Interpolator</span>
 <span class="n">listView</span><span class="o">.</span><span class="na">setOpenInterpolator</span><span class="o">(...);</span>
 </pre></div>
 
 <p>
-   <img src="demo2.gif" width="320" alt="Screenshot"></p>
+   <img src="demo2.gif" width="320" alt="Screenshot">
+</p>
       </section>
     </div>
 
