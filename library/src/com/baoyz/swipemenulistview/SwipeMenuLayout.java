@@ -186,6 +186,7 @@ public class SwipeMenuLayout extends FrameLayout {
 			} else {
 				// close
 				smoothCloseMenu();
+				mMenuView.getListView().onMenuClose();
 				return false;
 			}
 			break;
