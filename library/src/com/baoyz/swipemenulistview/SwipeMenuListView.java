@@ -3,6 +3,7 @@ package com.baoyz.swipemenulistview;
 import android.content.Context;
 import android.support.v4.view.MotionEventCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.ListView;
  * 
  */
 public class SwipeMenuListView extends ListView {
+	private static final String TAG = SwipeMenuListView.class.getSimpleName();
 
 	private static final int TOUCH_STATE_NONE = 0;
 	private static final int TOUCH_STATE_X = 1;
@@ -33,6 +35,7 @@ public class SwipeMenuListView extends ListView {
 
 	private SwipeMenuCreator mMenuCreator;
 	private OnMenuItemClickListener mOnMenuItemClickListener;
+	private OnMenuCloseListener mOnMenuCloseListener;
 	private Interpolator mCloseInterpolator;
 	private Interpolator mOpenInterpolator;
 
@@ -77,6 +80,7 @@ public class SwipeMenuListView extends ListView {
 				}
 				if (mTouchView != null && !flag) {
 					mTouchView.smoothCloseMenu();
+					onMenuClose();
 				}
 			}
 		});
@@ -129,6 +133,7 @@ public class SwipeMenuListView extends ListView {
 
 			if (mTouchView != null && mTouchView.isOpen()) {
 				mTouchView.smoothCloseMenu();
+				onMenuClose();
 				mTouchView = null;
 				// return super.onTouchEvent(ev);
 				// try to cancel the touch event
@@ -218,6 +223,21 @@ public class SwipeMenuListView extends ListView {
 
 	public void setOnSwipeListener(OnSwipeListener onSwipeListener) {
 		this.mOnSwipeListener = onSwipeListener;
+	}
+	
+	public void setOnMenuCloseListener(OnMenuCloseListener listener){
+		mOnMenuCloseListener = listener;
+	}			
+	
+	public void onMenuClose(){
+		//Log.d(TAG, "onMenuClose()");
+		if (null != mOnMenuCloseListener){
+			mOnMenuCloseListener.onMenuClose();
+		}
+	}
+	
+	public static interface OnMenuCloseListener{
+		public boolean onMenuClose();
 	}
 
 	public static interface OnMenuItemClickListener {
