@@ -59,6 +59,8 @@ public class SwipeMenuListView extends ListView {
 
 	@Override
 	public void setAdapter(ListAdapter adapter) {
+		
+		if(adapter != null){
 		super.setAdapter(new SwipeMenuAdapter(getContext(), adapter) {
 			@Override
 			public void createMenu(SwipeMenu menu) {
@@ -80,6 +82,9 @@ public class SwipeMenuListView extends ListView {
 				}
 			}
 		});
+		}else{
+			super.setAdapter(adapter)
+		}
 	}
 
 	public void setCloseInterpolator(Interpolator interpolator) {
