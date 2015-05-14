@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
@@ -45,12 +44,30 @@ public class SwipeMenuAdapter implements WrapperListAdapter,
 	public long getItemId(int position) {
 		return mAdapter.getItemId(position);
 	}
-
+/**
+ * 
+ * @author aem3372
+ * @date 2015-5-14
+ * 
+ * fix: Display abnormal, When mAdapter return View different from 
+ *      convertView and convertView is not null
+ */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		SwipeMenuLayout layout = null;
-		if (convertView == null) {
-			View contentView = mAdapter.getView(position, convertView, parent);
+		View view = null;
+		if (convertView != null) {
+			layout = (SwipeMenuLayout) convertView;
+			layout.closeMenu();
+			layout.setPosition(position);
+			view = mAdapter.getView(position, layout.getContentView(),
+					parent);
+		}
+		
+		if (convertView == null || view != layout.getContentView()) {
+			if(view == null) {
+				view = mAdapter.getView(position, convertView, parent);
+			}
 			SwipeMenu menu = new SwipeMenu(mContext);
 			menu.setViewType(mAdapter.getItemViewType(position));
 			createMenu(menu);
@@ -58,16 +75,10 @@ public class SwipeMenuAdapter implements WrapperListAdapter,
 					(SwipeMenuListView) parent);
 			menuView.setOnSwipeItemClickListener(this);
 			SwipeMenuListView listView = (SwipeMenuListView) parent;
-			layout = new SwipeMenuLayout(contentView, menuView,
+			layout = new SwipeMenuLayout(view, menuView,
 					listView.getCloseInterpolator(),
 					listView.getOpenInterpolator());
 			layout.setPosition(position);
-		} else {
-			layout = (SwipeMenuLayout) convertView;
-			layout.closeMenu();
-			layout.setPosition(position);
-			View view = mAdapter.getView(position, layout.getContentView(),
-					parent);
 		}
 		return layout;
 	}
