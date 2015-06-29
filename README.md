@@ -1,8 +1,9 @@
 SwipeMenuListView
 =================
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-SwipeMenuListView-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/912)
+[ ![Download](https://api.bintray.com/packages/baoyongzhang/maven/SwipeMenuListView/images/download.svg) ](https://bintray.com/baoyongzhang/maven/SwipeMenuListView/_latestVersion)
 
-A SwipeMenu of ListView.
+A swipe menu for ListView.
 
 # Demo
 <p>
@@ -10,6 +11,14 @@ A SwipeMenu of ListView.
 </p>
 
 # Usage
+
+### Add dependency
+
+```groovy
+dependencies {
+    compile 'com.baoyz.swipemenulistview:library:1.1.0'
+}
+```
 
 ### Step 1
 
