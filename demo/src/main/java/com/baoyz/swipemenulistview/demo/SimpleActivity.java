@@ -66,6 +66,8 @@ public class SimpleActivity extends Activity {
         mAppList = getPackageManager().getInstalledApplications(0);
 
         mListView = (SwipeMenuListView) findViewById(R.id.listView);
+        mListView.setSwipeDirection(SwipeMenuListView.DIRECTION_RIGHT);
+
         mAdapter = new AppAdapter();
         mListView.setAdapter(mAdapter);
 

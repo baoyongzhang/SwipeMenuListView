@@ -22,6 +22,10 @@ public class SwipeMenuListView extends ListView {
 	private static final int TOUCH_STATE_X = 1;
 	private static final int TOUCH_STATE_Y = 2;
 
+	public static final int DIRECTION_LEFT = 1;
+	public static final int DIRECTION_RIGHT = -1;
+	private int mDirection = 1;//swipe from right to left by default
+
 	private int MAX_Y = 5;
 	private int MAX_X = 3;
 	private float mDownX;
@@ -139,6 +143,7 @@ public class SwipeMenuListView extends ListView {
 			}
 			if (view instanceof SwipeMenuLayout) {
 				mTouchView = (SwipeMenuLayout) view;
+				mTouchView.setSwipeDirection(mDirection);
 			}
 			if (mTouchView != null) {
 				mTouchView.onSwipe(ev);
@@ -197,6 +202,7 @@ public class SwipeMenuListView extends ListView {
 					mTouchView.smoothCloseMenu();
 				}
 				mTouchView = (SwipeMenuLayout) view;
+				mTouchView.setSwipeDirection(mDirection);
 				mTouchView.smoothOpenMenu();
 			}
 		}
@@ -228,5 +234,9 @@ public class SwipeMenuListView extends ListView {
 		void onSwipeStart(int position);
 
 		void onSwipeEnd(int position);
+	}
+
+	public void setSwipeDirection(int direction) {
+		mDirection = direction;
 	}
 }
