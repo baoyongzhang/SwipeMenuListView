@@ -98,6 +98,16 @@ listView.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 });
 ```
 
+### Swipe directions
+
+```java
+	// Right
+	mListView.setSwipeDirection(SwipeMenuListView.DIRECTION_RIGHT);
+	
+	// Left
+	mListView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
+```
+
 ### Create Different Menu
 
 * Use the ViewType of adapter
