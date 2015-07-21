@@ -33,6 +33,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.TypedValue;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -66,6 +68,7 @@ public class SimpleActivity extends Activity {
         mAppList = getPackageManager().getInstalledApplications(0);
 
         mListView = (SwipeMenuListView) findViewById(R.id.listView);
+
         mAdapter = new AppAdapter();
         mListView.setAdapter(mAdapter);
 
@@ -237,5 +240,27 @@ public class SimpleActivity extends Activity {
     private int dp2px(int dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
                 getResources().getDisplayMetrics());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_left) {
+            mListView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
+            return true;
+        }
+        if (id == R.id.action_right) {
+            mListView.setSwipeDirection(SwipeMenuListView.DIRECTION_RIGHT);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
