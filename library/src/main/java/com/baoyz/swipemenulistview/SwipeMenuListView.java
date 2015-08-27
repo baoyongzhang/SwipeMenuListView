@@ -208,6 +208,12 @@ public class SwipeMenuListView extends ListView {
 		}
 	}
 
+	public void smoothCloseMenu(){
+        if (mTouchView != null && mTouchView.isOpen()) {
+            mTouchView.smoothCloseMenu();
+        }
+	}
+
 	private int dp2px(int dp) {
 		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
 				getContext().getResources().getDisplayMetrics());
