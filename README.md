@@ -16,7 +16,7 @@ A swipe menu for ListView.
 
 ```groovy
 dependencies {
-    compile 'com.baoyz.swipemenulistview:library:1.2.1'
+    compile 'com.baoyz.swipemenulistview:library:1.3.0'
 }
 ```
 
