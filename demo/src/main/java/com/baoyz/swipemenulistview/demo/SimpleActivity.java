@@ -150,12 +150,10 @@ public class SimpleActivity extends Activity {
         mListView.setOnMenuStateChangeListener(new SwipeMenuListView.OnMenuStateChangeListener() {
             @Override
             public void onMenuOpen(int position) {
-                Toast.makeText(getApplicationContext(), position + " open", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onMenuClose(int position) {
-                Toast.makeText(getApplicationContext(), position + " close", Toast.LENGTH_SHORT).show();
             }
         });
 
