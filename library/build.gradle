@@ -27,7 +27,7 @@ dependencies {
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
-version = "1.2.1"
+version = "1.3.0"
 
 def siteUrl = 'https://github.com/baoyongzhang/SwipeMenuListView'
 def gitUrl = 'https://github.com/baoyongzhang/SwipeMenuListView.git'
