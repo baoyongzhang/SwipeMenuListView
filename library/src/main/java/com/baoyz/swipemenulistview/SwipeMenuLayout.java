@@ -46,6 +46,8 @@ public class SwipeMenuLayout extends FrameLayout {
 	private Interpolator mCloseInterpolator;
 	private Interpolator mOpenInterpolator;
 
+	private boolean mSwipEnable = true;
+
 	public SwipeMenuLayout(View contentView, SwipeMenuView menuView) {
 		this(contentView, menuView, null, null);
 	}
@@ -278,7 +280,7 @@ public class SwipeMenuLayout extends FrameLayout {
 	public void openMenu() {
 		if (state == STATE_CLOSE) {
 			state = STATE_OPEN;
-			swipe(mMenuView.getWidth()*mSwipeDirection);
+			swipe(mMenuView.getWidth() * mSwipeDirection);
 		}
 	}
 
@@ -324,5 +326,13 @@ public class SwipeMenuLayout extends FrameLayout {
 			params.height = measuredHeight;
 			mMenuView.setLayoutParams(mMenuView.getLayoutParams());
 		}
+	}
+
+	public void setSwipEnable(boolean swipEnable){
+		mSwipEnable = swipEnable;
+	}
+
+	public boolean getSwipEnable(){
+		return mSwipEnable;
 	}
 }

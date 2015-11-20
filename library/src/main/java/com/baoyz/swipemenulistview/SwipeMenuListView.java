@@ -103,6 +103,37 @@ public class SwipeMenuListView extends ListView {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
+        //在拦截处处理，在滑动设置了点击事件的地方也能swip，点击时又不能影响原来的点击事件
+        int action = ev.getAction();
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                mDownX = ev.getX();
+                mDownY = ev.getY();
+                boolean handled = super.onInterceptTouchEvent(ev);
+                mTouchState = TOUCH_STATE_NONE;
+                mTouchPosition = pointToPosition((int) ev.getX(), (int) ev.getY());
+                View view = getChildAt(mTouchPosition - getFirstVisiblePosition());
+
+                //只在空的时候赋值 以免每次触摸都赋值，会有多个open状态
+                if (mTouchView == null && view instanceof SwipeMenuLayout) {
+                    mTouchView = (SwipeMenuLayout) view;
+                }
+                //如果摸在
+                if(mTouchView != null && mTouchView.isOpen() && view != mTouchView){
+                    handled =  true;
+                }
+
+                if (mTouchView != null) {
+                    mTouchView.onSwipe(ev);
+                }
+                return handled;
+            case MotionEvent.ACTION_MOVE:
+                float dy = Math.abs((ev.getY() - mDownY));
+                float dx = Math.abs((ev.getX() - mDownX));
+                if (Math.abs(dy) > MAX_Y || Math.abs(dx) > MAX_X) {
+                    return true;
+                }
+        }
         return super.onInterceptTouchEvent(ev);
     }
 
@@ -151,6 +182,13 @@ public class SwipeMenuListView extends ListView {
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
+                //有些可能有header,要减去header再判断
+                mTouchPosition = pointToPosition((int) ev.getX(), (int) ev.getY()) - getHeaderViewsCount();
+                //如果滑动了一下没完全展现，就收回去，这时候mTouchView已经赋值，再滑动另外一个不可以swip的view
+                //会导致mTouchView swip 。 所以要用位置判断是否滑动的是一个view
+                if (!mTouchView.getSwipEnable() || mTouchPosition != mTouchView.getPosition()) {
+                    break;
+                }
                 float dy = Math.abs((ev.getY() - mDownY));
                 float dx = Math.abs((ev.getX() - mDownX));
                 if (mTouchState == TOUCH_STATE_X) {

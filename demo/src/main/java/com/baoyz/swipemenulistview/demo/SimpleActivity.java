@@ -43,6 +43,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baoyz.swipemenulistview.BaseSwipListAdapter;
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
@@ -205,7 +206,7 @@ public class SimpleActivity extends Activity {
         }
     }
 
-    class AppAdapter extends BaseAdapter {
+    class AppAdapter extends BaseSwipListAdapter {
 
         @Override
         public int getCount() {
@@ -233,6 +234,18 @@ public class SimpleActivity extends Activity {
             ApplicationInfo item = getItem(position);
             holder.iv_icon.setImageDrawable(item.loadIcon(getPackageManager()));
             holder.tv_name.setText(item.loadLabel(getPackageManager()));
+            holder.iv_icon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(SimpleActivity.this, "iv_icon_click", Toast.LENGTH_SHORT).show();
+                }
+            });
+            holder.tv_name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(SimpleActivity.this,"iv_icon_click",Toast.LENGTH_SHORT).show();
+                }
+            });
             return convertView;
         }
 
@@ -245,6 +258,14 @@ public class SimpleActivity extends Activity {
                 tv_name = (TextView) view.findViewById(R.id.tv_name);
                 view.setTag(this);
             }
+        }
+
+        @Override
+        public boolean getSwipEnableByPosition(int position) {
+            if(position % 2 == 0){
+                return false;
+            }
+            return true;
         }
     }
 
