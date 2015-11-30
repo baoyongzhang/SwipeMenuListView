@@ -16,6 +16,7 @@ public class SwipeMenu {
 	private Context mContext;
 	private List<SwipeMenuItem> mItems;
 	private int mViewType;
+	private SwipeMenuView mSwipeMenuView;
 
 	public SwipeMenu(Context context) {
 		mContext = context;
@@ -42,8 +43,16 @@ public class SwipeMenu {
 		return mItems.get(index);
 	}
 
+	public void updateMenuItem(SwipeMenuItem item, int viewId) {
+		mSwipeMenuView.updateItem(mItems.get(item.getId()), viewId);
+	}
+
 	public int getViewType() {
 		return mViewType;
+	}
+
+	public void setSwipeMenuView(SwipeMenuView swipeMenuView) {
+		mSwipeMenuView = swipeMenuView;
 	}
 
 	public void setViewType(int viewType) {

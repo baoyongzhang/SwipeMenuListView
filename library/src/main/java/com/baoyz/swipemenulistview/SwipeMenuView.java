@@ -43,6 +43,24 @@ public class SwipeMenuView extends LinearLayout implements OnClickListener {
 		}
 	}
 
+	public void updateItem(SwipeMenuItem item, int id) {
+		LinearLayout parent = null;
+		for (int i = 0; i < this.getChildCount(); i++) {
+			if (getChildAt(i).getId() == id) {
+				parent = (LinearLayout) getChildAt(i);
+			}
+		}
+		for (int j = 0; j < parent.getChildCount(); j++) {
+			View view = parent.getChildAt(j);
+			if (view instanceof ImageView) {
+				updateIcon(item, (ImageView) view);
+			} else if (view instanceof TextView) {
+				updateTitle(item, (TextView) view);
+			}
+		}
+
+	}
+
 	private void addItem(SwipeMenuItem item, int id) {
 		LayoutParams params = new LayoutParams(item.getWidth(),
 				LayoutParams.MATCH_PARENT);
@@ -79,6 +97,16 @@ public class SwipeMenuView extends LinearLayout implements OnClickListener {
 		return tv;
 	}
 
+	private void updateTitle(SwipeMenuItem newItem, TextView tx) {
+		tx.setText(newItem.getTitle());
+		tx.invalidate();
+	}
+
+	private void updateIcon(SwipeMenuItem newItem, ImageView imageView) {
+		imageView.setImageDrawable(newItem.getIcon());
+		imageView.invalidate();
+	}
+
 	@Override
 	public void onClick(View v) {
 		if (onItemClickListener != null && mLayout.isOpen()) {
@@ -90,7 +118,8 @@ public class SwipeMenuView extends LinearLayout implements OnClickListener {
 		return onItemClickListener;
 	}
 
-	public void setOnSwipeItemClickListener(OnSwipeItemClickListener onItemClickListener) {
+	public void setOnSwipeItemClickListener(
+			OnSwipeItemClickListener onItemClickListener) {
 		this.onItemClickListener = onItemClickListener;
 	}
 
