@@ -117,7 +117,7 @@ public class SwipeMenuListView extends ListView {
                 //只在空的时候赋值 以免每次触摸都赋值，会有多个open状态
                 if (view instanceof SwipeMenuLayout) {
                     //如果有打开了 就拦截.
-                    if (mTouchView != null && mTouchView.isOpen()) {
+                    if (mTouchView != null && mTouchView.isOpen() && !inRangeOfView(mTouchView.getMenuView(), ev)) {
                         return true;
                     }
                     mTouchView = (SwipeMenuLayout) view;
@@ -318,5 +318,23 @@ public class SwipeMenuListView extends ListView {
 
     public void setSwipeDirection(int direction) {
         mDirection = direction;
+    }
+
+    /**
+     * 判断点击事件是否在某个view内
+     *
+     * @param view
+     * @param ev
+     * @return
+     */
+    public static boolean inRangeOfView(View view, MotionEvent ev) {
+        int[] location = new int[2];
+        view.getLocationOnScreen(location);
+        int x = location[0];
+        int y = location[1];
+        if (ev.getRawX() < x || ev.getRawX() > (x + view.getWidth()) || ev.getRawY() < y || ev.getRawY() > (y + view.getHeight())) {
+            return false;
+        }
+        return true;
     }
 }

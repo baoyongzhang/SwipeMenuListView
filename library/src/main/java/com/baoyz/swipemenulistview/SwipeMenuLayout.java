@@ -210,6 +210,9 @@ public class SwipeMenuLayout extends FrameLayout {
 	}
 
 	private void swipe(int dis) {
+		if(!mSwipEnable){
+			return ;
+		}
 		if (Math.signum(dis) != mSwipeDirection) {
 			dis = 0;
 		} else if (Math.abs(dis) > mMenuView.getWidth()) {
@@ -258,6 +261,9 @@ public class SwipeMenuLayout extends FrameLayout {
 	}
 
 	public void smoothOpenMenu() {
+		if(!mSwipEnable){
+			return ;
+		}
 		state = STATE_OPEN;
 		if (mSwipeDirection == SwipeMenuListView.DIRECTION_LEFT) {
 			mOpenScroller.startScroll(-mContentView.getLeft(), 0, mMenuView.getWidth(), 0, 350);
@@ -278,6 +284,9 @@ public class SwipeMenuLayout extends FrameLayout {
 	}
 
 	public void openMenu() {
+		if(!mSwipEnable){
+			return ;
+		}
 		if (state == STATE_CLOSE) {
 			state = STATE_OPEN;
 			swipe(mMenuView.getWidth() * mSwipeDirection);
