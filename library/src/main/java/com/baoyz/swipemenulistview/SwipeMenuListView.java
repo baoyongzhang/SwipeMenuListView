@@ -115,12 +115,17 @@ public class SwipeMenuListView extends ListView {
                 View view = getChildAt(mTouchPosition - getFirstVisiblePosition());
 
                 //只在空的时候赋值 以免每次触摸都赋值，会有多个open状态
-                if (mTouchView == null && view instanceof SwipeMenuLayout) {
+                if (view instanceof SwipeMenuLayout) {
+                    //如果有打开了 就拦截.
+                    if (mTouchView != null && mTouchView.isOpen()) {
+                        return true;
+                    }
                     mTouchView = (SwipeMenuLayout) view;
+                    mTouchView.setSwipeDirection(mDirection);
                 }
-                //如果摸在
-                if(mTouchView != null && mTouchView.isOpen() && view != mTouchView){
-                    handled =  true;
+                //如果摸在另外个view
+                if (mTouchView != null && mTouchView.isOpen() && view != mTouchView) {
+                    handled = true;
                 }
 
                 if (mTouchView != null) {
@@ -131,6 +136,17 @@ public class SwipeMenuListView extends ListView {
                 float dy = Math.abs((ev.getY() - mDownY));
                 float dx = Math.abs((ev.getX() - mDownX));
                 if (Math.abs(dy) > MAX_Y || Math.abs(dx) > MAX_X) {
+                    //每次拦截的down都把触摸状态设置成了TOUCH_STATE_NONE 只有返回true才会走onTouchEvent 所以写在这里就够了
+                    if (mTouchState == TOUCH_STATE_NONE) {
+                        if (Math.abs(dy) > MAX_Y) {
+                            mTouchState = TOUCH_STATE_Y;
+                        } else if (dx > MAX_X) {
+                            mTouchState = TOUCH_STATE_X;
+                            if (mOnSwipeListener != null) {
+                                mOnSwipeListener.onSwipeStart(mTouchPosition);
+                            }
+                        }
+                    }
                     return true;
                 }
         }
