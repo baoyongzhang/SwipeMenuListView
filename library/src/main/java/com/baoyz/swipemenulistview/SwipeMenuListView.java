@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Interpolator;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -39,6 +40,8 @@ public class SwipeMenuListView extends ListView {
     private Interpolator mCloseInterpolator;
     private Interpolator mOpenInterpolator;
 
+    private int mPosition = -1;
+
     public SwipeMenuListView(Context context) {
         super(context);
         init();
@@ -60,9 +63,13 @@ public class SwipeMenuListView extends ListView {
         mTouchState = TOUCH_STATE_NONE;
     }
 
+    public void setMenuPosition(int position) {
+        mPosition = position;
+    }
+
     @Override
     public void setAdapter(ListAdapter adapter) {
-        super.setAdapter(new SwipeMenuAdapter(getContext(), adapter) {
+        super.setAdapter(new SwipeMenuAdapter(getContext(), adapter, mPosition) {
             @Override
             public void createMenu(SwipeMenu menu) {
                 if (mMenuCreator != null) {
@@ -114,7 +121,17 @@ public class SwipeMenuListView extends ListView {
                 mTouchPosition = pointToPosition((int) ev.getX(), (int) ev.getY());
                 View view = getChildAt(mTouchPosition - getFirstVisiblePosition());
 
-                //只在空的时候赋值 以免每次触摸都赋值，会有多个open状态
+                if (!(view instanceof SwipeMenuLayout)) {
+                    // find child for SwipeMenuLayout
+                    ViewGroup viewGroup = (ViewGroup) view;
+                    for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                        view = viewGroup.getChildAt(i);
+                        if (view instanceof SwipeMenuLayout) {
+                            break;
+                        }
+                    }
+                }
+                // 只在空的时候赋值 以免每次触摸都赋值，会有多个open状态
                 if (view instanceof SwipeMenuLayout) {
                     //如果有打开了 就拦截.
                     if (mTouchView != null && mTouchView.isOpen() && !inRangeOfView(mTouchView.getMenuView(), ev)) {
