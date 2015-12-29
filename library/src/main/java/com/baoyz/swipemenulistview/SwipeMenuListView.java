@@ -208,6 +208,9 @@ public class SwipeMenuListView extends ListView {
                 float dy = Math.abs((ev.getY() - mDownY));
                 float dx = Math.abs((ev.getX() - mDownX));
                 if (mTouchState == TOUCH_STATE_X) {
+                    if (mOnSwipeListener != null) {
+                            mOnSwipeListener.onSwipeStart(mTouchPosition);
+                    }
                     if (mTouchView != null) {
                         mTouchView.onSwipe(ev);
                     }
