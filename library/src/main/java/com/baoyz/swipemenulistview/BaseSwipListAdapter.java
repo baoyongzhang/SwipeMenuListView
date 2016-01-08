@@ -27,7 +27,6 @@ import android.widget.BaseAdapter;
 
 /**
  * Created by Abner on 15/11/20.
- * QQ 230877476
  * Email nimengbo@gmail.com
  * github https://github.com/nimengbo
  */
