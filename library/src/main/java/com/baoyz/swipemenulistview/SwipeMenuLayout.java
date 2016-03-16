@@ -185,6 +185,7 @@ public class SwipeMenuLayout extends FrameLayout {
 			}
 			swipe(dis);
 			break;
+		case MotionEvent.ACTION_CANCEL:
 		case MotionEvent.ACTION_UP:
 			if ((isFling || Math.abs(mDownX - event.getX()) > (mMenuView.getWidth() / 2)) &&
 					Math.signum(mDownX - event.getX()) == mSwipeDirection) {
