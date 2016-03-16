@@ -252,6 +252,11 @@ public class SwipeMenuListView extends ListView {
                     return true;
                 }
                 break;
+            case MotionEvent.ACTION_CANCEL:
+                if (mTouchState == TOUCH_STATE_X) {
+                    if (mTouchView != null) mTouchView.onSwipe(ev);
+                }
+                break;
         }
         return super.onTouchEvent(ev);
     }
