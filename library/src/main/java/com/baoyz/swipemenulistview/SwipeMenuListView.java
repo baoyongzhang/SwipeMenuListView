@@ -1,7 +1,6 @@
 package com.baoyz.swipemenulistview;
 
 import android.content.Context;
-import android.support.v4.view.MotionEventCompat;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.MotionEvent;
@@ -166,15 +165,24 @@ public class SwipeMenuListView extends ListView {
                 mTouchState = TOUCH_STATE_NONE;
 
                 mTouchPosition = pointToPosition((int) ev.getX(), (int) ev.getY());
+                View view = getChildAt(mTouchPosition - getFirstVisiblePosition());
 
                 if (mTouchPosition == oldPos && mTouchView != null
                         && mTouchView.isOpen()) {
+                    // 新添加的内容,当按下的item不是当前已经打开的item,则关闭已经打开的item,并返回false.
+                    // 不再响应down以后的事件,仿qq效果
+                    if (view instanceof SwipeMenuLayout) {
+                        SwipeMenuLayout touchView = (SwipeMenuLayout) view;
+                        if (!touchView.isOpen()) {
+                            mTouchView.smoothCloseMenu();
+                            return false;
+                        }
+                    }
                     mTouchState = TOUCH_STATE_X;
                     mTouchView.onSwipe(ev);
                     return true;
                 }
 
-                View view = getChildAt(mTouchPosition - getFirstVisiblePosition());
 
                 if (mTouchView != null && mTouchView.isOpen()) {
                     mTouchView.smoothCloseMenu();
@@ -272,7 +280,7 @@ public class SwipeMenuListView extends ListView {
         }
     }
 
-    public void smoothCloseMenu(){
+    public void smoothCloseMenu() {
         if (mTouchView != null && mTouchView.isOpen()) {
             mTouchView.smoothCloseMenu();
         }
