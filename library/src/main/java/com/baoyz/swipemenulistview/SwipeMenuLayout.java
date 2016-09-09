@@ -186,10 +186,18 @@ public class SwipeMenuLayout extends FrameLayout {
 			swipe(dis);
 			break;
 		case MotionEvent.ACTION_UP:
-			if ((isFling || Math.abs(mDownX - event.getX()) > (mMenuView.getWidth() / 2)) &&
-					Math.signum(mDownX - event.getX()) == mSwipeDirection) {
+			if ((isFling || Math.signum(mDownX - event.getX()) == mSwipeDirection)) {
 				// open
-				smoothOpenMenu();
+				//新添加的内容,防止在已被拉开的item上向拉开的方向滑动然后抬起手指时,
+				//item有很大几率关闭的问题
+				if (Math.abs(mDownX - event.getX()) > (mMenuView.getWidth() / 2)) {
+					smoothOpenMenu();
+				} else {
+					//没有item打开时,且滑动距离不满足打开的条件才进行关闭
+					if (!isOpen()) {
+						smoothCloseMenu();
+					}
+				}
 			} else {
 				// close
 				smoothCloseMenu();
