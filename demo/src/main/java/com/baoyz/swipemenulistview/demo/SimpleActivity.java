@@ -71,7 +71,6 @@ public class SimpleActivity extends Activity {
         mListView = (SwipeMenuListView) findViewById(R.id.listView);
 
         mAdapter = new AppAdapter();
-        mListView.setAdapter(mAdapter);
 
         // step 1. create a MenuCreator
         SwipeMenuCreator creator = new SwipeMenuCreator() {
@@ -111,6 +110,8 @@ public class SimpleActivity extends Activity {
         };
         // set creator
         mListView.setMenuCreator(creator);
+
+        mListView.setAdapter(mAdapter);
 
         // step 2. listener item click event
         mListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
