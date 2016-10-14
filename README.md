@@ -200,3 +200,21 @@ listView.setOpenInterpolator(...);
 <p>
    <img src="demo2.gif" width="320" alt="Screenshot"/>
 </p>
+
+# Install
+
+You can install using Gradle and [JitPack](https://jitpack.io/#baoyongzhang/SwipeMenuListView):
+
+```gradle
+	repositories {
+	    maven {
+	        url "https://jitpack.io"
+	    }
+	}
+```
+```gradle
+	dependencies {
+	        compile 'com.github.baoyongzhang:SwipeMenuListView:42511d73fb'
+	}
+```
+	
