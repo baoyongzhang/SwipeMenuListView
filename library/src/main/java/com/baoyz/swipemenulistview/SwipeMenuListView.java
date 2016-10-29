@@ -30,6 +30,8 @@ public class SwipeMenuListView extends ListView {
     private float mDownY;
     private int mTouchState;
     private int mTouchPosition;
+	//the last position/上一次点击的位置
+	private int mOldTouchPosition = -1;  
     private SwipeMenuLayout mTouchView;
     private OnSwipeListener mOnSwipeListener;
 
@@ -160,20 +162,34 @@ public class SwipeMenuListView extends ListView {
         int action = ev.getAction();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                int oldPos = mTouchPosition;
-                mDownX = ev.getX();
+                //int oldPos = mTouchPosition;//this is wrong/这里不能这么写，mTouchPosition与oldPos是永远相等的
+                //-1是初始值，根据是否等于-1，判断是否第一次按下
+				if(mOldTouchPosition == -1){//-1 is the original value
+                    mOldTouchPosition = mTouchPosition;
+                }
+				mDownX = ev.getX();
                 mDownY = ev.getY();
                 mTouchState = TOUCH_STATE_NONE;
 
                 mTouchPosition = pointToPosition((int) ev.getX(), (int) ev.getY());
-
-                if (mTouchPosition == oldPos && mTouchView != null
+                //在这里mTouchPosition与oldPos是永远相等的，达不到想要的结果，因为它俩对应一个MotionEvent
+                /*if (mTouchPosition == oldPos && mTouchView != null
+                        && mTouchView.isOpen()) {
+                    mTouchState = TOUCH_STATE_X;
+                    mTouchView.onSwipe(ev);
+                    return true;
+                }*/
+				//这里的mOldTouchPosition才是上一次的position
+                if (mTouchPosition == mOldTouchPosition && mTouchView != null
                         && mTouchView.isOpen()) {
                     mTouchState = TOUCH_STATE_X;
                     mTouchView.onSwipe(ev);
                     return true;
                 }
-
+				//当位置不同时，更新mOldTouchPosition
+                if(mOldTouchPosition != mTouchPosition){ 
+                    mOldTouchPosition = mTouchPosition;  
+                }
                 View view = getChildAt(mTouchPosition - getFirstVisiblePosition());
 
                 if (mTouchView != null && mTouchView.isOpen()) {
